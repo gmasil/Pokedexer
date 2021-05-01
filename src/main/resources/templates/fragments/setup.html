@@ -1,0 +1,36 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Setup Fragment</title>
+</head>
+</body>
+
+<div th:remove="tag" th:fragment="setup">
+	<h1>Setup</h1>
+		<form action="#" th:action="@{'/setup'}" th:object="${user}" method="post">
+			<div class="form-element">
+				<label for="setup-user-name">Name:</label>
+				<input id="setup-user-name" type="text" th:field="*{name}" />
+				<span class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
+			</div>
+			<div class="form-element">
+				<label for="setup-user-password">Password:</label>
+				<input id="setup-user-password" type="text" th:field="*{password}" />
+				<span class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</span>
+			</div>
+			<div class="form-element">
+				<button type="submit">Setup User</button>
+			</div>
+		</form>
+</div>
+
+<div th:remove="tag" th:fragment="already-setup">
+	<p>Already setup</p>
+</div>
+
+<div th:remove="tag" th:fragment="setup-successful">
+	<p>Setup done</p>
+</div>
+
+</body>
+</html>

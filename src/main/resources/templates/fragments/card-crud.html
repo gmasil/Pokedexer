@@ -1,0 +1,118 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Login Fragment</title>
+</head>
+</body>
+
+<div th:remove="tag" th:fragment="list">
+	<h2>Cards</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Cert</th>
+				<th>Grade</th>
+				<th>Population</th>
+				<th>Purchase Date</th>
+				<th>Purchase Price</th>
+				<th>Grading Sendoff</th>
+				<th>Grading Received</th>
+				<th>Set Name</th>
+				<th>Card Number</th>
+				<th>Status</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="card : ${cards}">
+				<td th:text="${card.getName()}"></td>
+				<td th:text="${card.getCertNumber()}"></td>
+				<td th:text="${card.getGrade()}"></td>
+				<td th:text="${card.getPopulation()}"></td>
+				<td th:text="${card.getPurchaseDate()}"></td>
+				<td th:text="${card.getPurchasePrice()}"></td>
+				<td th:text="${card.getGradingSendOffDate()}"></td>
+				<td th:text="${card.getGradingReceivedDate()}"></td>
+				<td th:text="${card.getSetName()}"></td>
+				<td th:text="${card.getCardNumber()}"></td>
+				<td th:text="${card.getStatus()}"></td>
+				<td>
+					<a th:href="@{/edit/{id}(id=${card.getId})}">
+						<em class="material-icons">edit</em>
+					</a>
+					<a th:href="@{/delete/{id}(id=${card.getId()})}">
+						<em class="material-icons">delete</em>
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div th:remove="tag" th:fragment="add-edit">
+	<h2 th:text="${(method == 'edit' ? 'Edit' : 'New') + ' Card'}">New/Edit Card</h2>
+	<form action="#" th:action="${'/' + (method == 'edit' ? 'edit/' + card.id : 'add')}" th:object="${card}" method="post">
+		<div class="form-element">
+			<label for="card-crud-name">Name:</label>
+			<input id="card-crud-name" type="text" th:field="*{name}" />
+			<span class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+		</div>
+		<div class="form-element">
+			<label for="card-crud-certnumber">Cert:</label>
+			<input id="card-crud-certnumber" type="text" th:field="*{certNumber}" />
+			<span class="field-error" th:if="${#fields.hasErrors('certNumber')}" th:errors="*{certNumber}"></span>
+		</div>
+		<div class="form-element">
+			<label for="card-crud-grade">Grade:</label>
+			<input id="card-crud-grade" type="text" th:field="*{grade}" />
+			<span class="field-error" th:if="${#fields.hasErrors('grade')}" th:errors="*{grade}"></span>
+		</div>
+		<div class="form-element">
+			<label for="card-crud-population">Population:</label>
+			<input id="card-crud-population" type="text" th:field="*{population}" />
+			<span class="field-error" th:if="${#fields.hasErrors('population')}" th:errors="*{population}"></span>
+		</div>
+		<div class="form-element">
+			<label for="card-crud-purchasedate">Purchase Date:</label>
+			<input id="card-crud-purchasedate" type="date" th:field="*{purchaseDate}" />
+			<span class="field-error" th:if="${#fields.hasErrors('purchaseDate')}" th:errors="*{purchaseDate}"></span>
+		</div>
+		<div class="form-element">
+			<label for="card-crud-purchaseprice">Purchase Price:</label>
+			<input id="card-crud-purchaseprice" type="text" th:field="*{purchasePrice}" />
+			<span class="field-error" th:if="${#fields.hasErrors('purchasePrice')}" th:errors="*{purchasePrice}"></span>
+		</div>
+		<div class="form-element">
+			<label for="card-crud-gradingsendoffdate">Grading Sendoff Date:</label>
+			<input id="card-crud-gradingsendoffdate" type="date" th:field="*{gradingSendOffDate}" />
+			<span class="field-error" th:if="${#fields.hasErrors('gradingSendOffDate')}" th:errors="*{gradingSendOffDate}"></span>
+		</div>
+		<div class="form-element">
+			<label for="card-crud-gradingreceiveddate">Grading Sendoff Date:</label>
+			<input id="card-crud-gradingreceiveddate" type="date" th:field="*{gradingReceivedDate}" />
+			<span class="field-error" th:if="${#fields.hasErrors('gradingReceivedDate')}" th:errors="*{gradingReceivedDate}"></span>
+		</div>
+		<div class="form-element">
+			<label for="card-crud-setname">Set Name:</label>
+			<input id="card-crud-setname" type="text" th:field="*{setName}" />
+			<span class="field-error" th:if="${#fields.hasErrors('setName')}" th:errors="*{setName}"></span>
+		</div>
+		<div class="form-element">
+			<label for="card-crud-cardnumber">Card Number:</label>
+			<input id="card-crud-cardnumber" type="text" th:field="*{cardNumber}" />
+			<span class="field-error" th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}"></span>
+		</div>
+		<div class="form-element">
+			<label for="card-crud-status">Status:</label>
+			<input id="card-crud-status" type="text" th:field="*{status}" />
+			<span class="field-error" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></span>
+		</div>
+		<div class="form-element">
+			<button type="submit" th:text="${method == 'edit' ? 'Edit' : 'Add'}">Submit</button>
+		</div>
+	</form>
+</div>
+
+</body>
+</html>

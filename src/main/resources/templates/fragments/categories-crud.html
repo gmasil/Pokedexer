@@ -1,0 +1,58 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Login Fragment</title>
+</head>
+</body>
+
+<div th:remove="tag" th:fragment="list">
+	<p>
+		<a href="/dashboard/categories/add">
+			<em class="material-icons">add</em>
+			Add a new category
+		</a>
+	</p>
+	<h2 th:if="${categories.isEmpty()}">No categories yet!</h2>
+	<th:block th:unless="${categories.isEmpty()}">
+		<h2>Categories</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="category : ${categories}">
+					<td th:text="${category.name}"></td>
+					<td>
+						<a th:href="@{/dashboard/categories/edit/{id}(id=${category.id})}">
+							<em class="material-icons">edit</em>
+						</a>
+						<a th:href="@{/dashboard/categories/delete/{id}(id=${category.id})}">
+							<em class="material-icons">delete</em>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</th:block>
+</div>
+
+<div th:remove="tag" th:fragment="add-edit">
+	<h2 th:text="${(method == 'edit' ? 'Edit' : 'New') + ' Category'}">New/Edit Category</h2>
+	<form action="#" th:action="${'/dashboard/categories/' + (method == 'edit' ? 'edit/' + categoryDTO.id : 'add')}" th:object="${categoryDTO}" method="post">
+		<div class="form-element">
+			<label for="category-crud-name">Name:</label>
+			<input id="category-crud-name" type="text" th:field="*{name}" />
+			<span class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
+			<span class="field-error" th:if="${namealreadyexists != null}">Name already exists</span>
+		</div>
+		<div class="form-element">
+			<button type="submit" th:text="${method == 'edit' ? 'Edit' : 'Add'}">Submit</button>
+		</div>
+	</form>
+</div>
+
+</body>
+</html>

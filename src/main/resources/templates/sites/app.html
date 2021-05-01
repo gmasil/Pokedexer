@@ -1,0 +1,15 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>App Site</title>
+</head>
+</body>
+
+<div th:remove="tag" th:fragment="app">
+	<div class="dashboard-content">
+		<div th:replace="'fragments/' + ${fragmentfile} :: ${fragment}"></div>
+	</div>
+</div>
+
+</body>
+</html>

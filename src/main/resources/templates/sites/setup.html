@@ -1,0 +1,13 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Setup Site</title>
+</head>
+</body>
+
+<div th:remove="tag" th:fragment="setup">
+	<div th:replace="'fragments/' + ${fragmentfile} :: ${fragment}"></div>
+</div>
+
+</body>
+</html>

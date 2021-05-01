@@ -1,0 +1,27 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Error Site</title>
+</head>
+</body>
+
+<div th:remove="tag" th:fragment="error">
+	<div class="content">
+		<h1 class="title">
+			<a href="/">Collector</a>
+		</h1>
+		<div class="diagonal">
+			<div class="card">
+				<div class="login-form">
+					<h2 th:text="${code}"></h2>
+					<p th:if="${message != null}" th:text="${message}"></p>
+					<p th:if="${exception != null}" th:text="${exception.getMessage()}"></p>
+				</div>
+			</div>
+		</div>
+		<div class="footer">&copy; 2021 GMasil Inc.</div>
+	</div>
+</div>
+
+</body>
+</html>
