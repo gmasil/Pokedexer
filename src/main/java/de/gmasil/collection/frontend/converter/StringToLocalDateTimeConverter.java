@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Tupugoya.  If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.collection.frontend;
+package de.gmasil.collection.frontend.converter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

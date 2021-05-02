@@ -5,8 +5,10 @@
 </head>
 </body>
 
-<div th:remove="tag" th:fragment="setup">
-	<div th:replace="'fragments/' + ${fragmentfile} :: ${fragment}"></div>
+<div class="container" th:fragment="setup">
+	<div class="jumbotron mt-5">
+		<div th:replace="'fragments/' + ${fragmentfile} :: ${fragment}"></div>
+	</div>
 </div>
 
 </body>

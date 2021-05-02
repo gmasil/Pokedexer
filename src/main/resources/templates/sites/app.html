@@ -6,7 +6,7 @@
 </body>
 
 <div th:remove="tag" th:fragment="app">
-	<div class="dashboard-content">
+	<div class="container-fluid">
 		<div th:replace="'fragments/' + ${fragmentfile} :: ${fragment}"></div>
 	</div>
 </div>

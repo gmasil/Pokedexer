@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.data.annotation.LastModifiedDate;
@@ -29,6 +31,8 @@ import de.gmasil.collection.series.Series;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
 public class Card {
+    public static final String[] PROGRESS_VALUES = new String[] { "none", "interested", "bought", "ungraded",
+            "in grading", "graded" };
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +65,10 @@ public class Card {
     private Integer cardNumber;
 
     private String status;
+
+    @Min(0)
+    @Max(5)
+    private int progress = 0;
 
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
@@ -170,6 +178,14 @@ public class Card {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
 
     public Date getCreatedAt() {

@@ -17,10 +17,10 @@ public class RestTemplateFactory {
     @Autowired
     private RestTemplateBuilder templateBuilder;
 
-    @Value("${initial.user.name:#{null}}")
+    @Value("${setup.user.name:#{null}}")
     private String username;
 
-    @Value("${initial.user.password:#{null}}")
+    @Value("${setup.user.password:#{null}}")
     private String password;
 
     public RestTemplate getRestTemplate() {

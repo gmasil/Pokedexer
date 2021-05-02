@@ -75,6 +75,7 @@ public class CardRestController {
         if (cardDetails.getStatus() != null) {
             card.setStatus(cardDetails.getStatus());
         }
+        card.setProgress(cardDetails.getProgress());
         return cardRepository.save(card);
     }
 

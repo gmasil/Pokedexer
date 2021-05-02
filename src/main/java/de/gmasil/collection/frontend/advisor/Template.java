@@ -53,6 +53,13 @@ public class Template {
         return makeApp("generic", "text");
     }
 
+    // progress
+
+    public String makeProgress(int value) {
+        addAttribute("svgprogress", value);
+        return "fragments/progress";
+    }
+
     // series
 
     public String makeSeriesList(List<Series> series) {
@@ -94,6 +101,14 @@ public class Template {
         return INDEX;
     }
 
+    public String makeSeriesDeleteConfirm(Series series) {
+        setSite(APP);
+        setFragmentFile("series-crud");
+        setFragment("delete-confirm");
+        addAttribute("series", series);
+        return INDEX;
+    }
+
     // card
 
     public String makeCardList(List<Card> cards) {
@@ -110,6 +125,7 @@ public class Template {
         setFragment(ADD_EDIT);
         setMethod("add");
         addAttribute("series", series);
+        addAttribute("progressvalues", Card.PROGRESS_VALUES);
         return INDEX;
     }
 
@@ -120,6 +136,15 @@ public class Template {
         setMethod("edit");
         addAttribute("card", card);
         addAttribute("series", series);
+        addAttribute("progressvalues", Card.PROGRESS_VALUES);
+        return INDEX;
+    }
+
+    public String makeCardDeleteConfirm(Card card) {
+        setSite(APP);
+        setFragmentFile("card-crud");
+        setFragment("delete-confirm");
+        addAttribute("card", card);
         return INDEX;
     }
 
@@ -136,13 +161,6 @@ public class Template {
         setSite(SETUP);
         setFragmentFile(SETUP);
         setFragment("already-setup");
-        return INDEX;
-    }
-
-    public String makeSetupSuccess() {
-        setSite(SETUP);
-        setFragmentFile(SETUP);
-        setFragment("setup-successful");
         return INDEX;
     }
 

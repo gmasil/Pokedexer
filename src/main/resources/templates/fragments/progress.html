@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="80" viewBox="0 0 500 100">
+	<th:block th:each="i: ${#numbers.sequence(0, 4)}">
+		<rect th:if="${i!=4}" th:attr="x=${i*100 + 50},fill=${i+1 >= svgprogress ? '#dc3545 ' : '#28a745'}" y="45" width="100" height="10" fill="red" stroke="black" stroke-width="0"></rect>
+		<circle th:attr="cx=${i*100 + 50},r=${i+1 == svgprogress ? 45 : 30},fill=${i+1 > svgprogress ? '#dc3545 ' : '#28a745'}" cy="50" r="40" stroke="black" stroke-width="0"></circle>
+	</th:block>
+</svg>

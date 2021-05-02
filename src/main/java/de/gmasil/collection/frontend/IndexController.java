@@ -65,7 +65,14 @@ public class IndexController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteCard(@PathVariable("id") long id, Model model) {
+    public String deleteCardConfirm(Template template, @PathVariable("id") long id, Model model) {
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid card id:" + id));
+        return template.makeCardDeleteConfirm(card);
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteCard(Template template, @PathVariable("id") long id, Model model) {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid card id:" + id));
         cardRepository.delete(card);

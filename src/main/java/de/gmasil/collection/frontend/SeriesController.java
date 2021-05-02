@@ -66,14 +66,21 @@ public class SeriesController {
         } catch (DataIntegrityViolationException e) {
             return template.makeSeriesEdit(series, true);
         }
-        return "redirect:/";
+        return "redirect:/series";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteSeries(@PathVariable("id") long id, Model model) {
+    public String deleteSeriesConfirm(Template template, @PathVariable("id") long id, Model model) {
+        Series series = seriesRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid series id:" + id));
+        return template.makeSeriesDeleteConfirm(series);
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteSeries(Template template, @PathVariable("id") long id, Model model) {
         Series series = seriesRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid series id:" + id));
         seriesRepository.delete(series);
-        return "redirect:/";
+        return "redirect:/series";
     }
 }

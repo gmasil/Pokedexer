@@ -1,5 +1,7 @@
 package de.gmasil.collection.setup;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -22,10 +24,10 @@ public class InitialSetupRunner {
     @Autowired
     private UserService userService;
 
-    @Value("${initial.user.name:#{null}}")
+    @Value("${setup.user.name:#{null}}")
     private String username;
 
-    @Value("${initial.user.password:#{null}}")
+    @Value("${setup.user.password:#{null}}")
     private String password;
 
     @EventListener(ApplicationReadyEvent.class)
@@ -59,11 +61,25 @@ public class InitialSetupRunner {
         if (cardRepo.count() == 0) {
             Card card = new Card();
             card.setName("Misty's Tears");
+            card.setPurchasePrice(79.99D);
             cardRepo.save(card);
             card = new Card();
             card.setName("Misty's Gyarados");
+            card.setPurchasePrice(62.0D);
             card.setCardNumber(130);
             card.setSeries(initialSeries);
+            cardRepo.save(card);
+            card = new Card();
+            card.setName("Misty's Seadra");
+            card.setPurchasePrice(83.34D);
+            card.setCardNumber(117);
+            card.setSeries(initialSeries);
+            card.setPurchaseDate(LocalDate.of(2021, 04, 11));
+            card.setSeries(initialSeries);
+            card.setCertNumber(44728823L);
+            card.setGrade(9);
+            card.setPopulation(74);
+            card.setProgress(5);
             cardRepo.save(card);
         }
     }

@@ -1,5 +1,6 @@
 package de.gmasil.collection.setup;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class SetupController {
     private UserService userService;
 
     @GetMapping("/setup")
-    public String setup(Template template, Model model, User user) {
+    public String setup(Template template, User user) {
         if (userService.hasUsers()) {
             return template.makeSetupAlreadyDone();
         } else {
@@ -28,12 +29,13 @@ public class SetupController {
     }
 
     @PostMapping("/setup")
-    public String setupPost(Template template, Model model, @Valid User user, BindingResult bindingResult) {
+    public String setupPost(HttpServletResponse response, Template template, Model model, @Valid User user,
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return template.makeSetup();
         }
         userService.encodePassword(user);
         userService.save(user);
-        return template.makeSetupSuccess();
+        return template.makeSetupAlreadyDone();
     }
 }
