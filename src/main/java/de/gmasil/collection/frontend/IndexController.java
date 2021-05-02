@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import de.gmasil.collection.card.Card;
 import de.gmasil.collection.card.CardRepository;
 import de.gmasil.collection.frontend.advisor.Template;
+import de.gmasil.collection.series.SeriesRepository;
 
 @Controller
 public class IndexController {
     @Autowired
     private CardRepository cardRepository;
+
+    @Autowired
+    private SeriesRepository seriesRepository;
 
     @GetMapping("/")
     public String index(Template template) {
@@ -29,14 +33,14 @@ public class IndexController {
 
     @GetMapping("/add")
     public String showForm(Template template, Card card) {
-        return template.makeCardAdd();
+        return template.makeCardAdd(seriesRepository.findAll());
     }
 
     @PostMapping("/add")
-    public String checkTransactionInfo(Template template, @Valid Card card, BindingResult bindingResult) {
+    public String addCard(Template template, @Valid Card card, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             handleCardBindingErrors(bindingResult);
-            return template.makeCardAdd();
+            return template.makeCardAdd(seriesRepository.findAll());
         }
         cardRepository.save(card);
         return "redirect:";
@@ -46,22 +50,22 @@ public class IndexController {
     public String showUpdateForm(Template template, @PathVariable("id") long id) {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid card id:" + id));
-        return template.makeCardEdit(card);
+        return template.makeCardEdit(card, seriesRepository.findAll());
     }
 
     @PostMapping("/edit/{id}")
-    public String updateUser(Template template, @PathVariable("id") long id, @Valid Card card,
+    public String updateCard(Template template, @PathVariable("id") long id, @Valid Card card,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             handleCardBindingErrors(bindingResult);
-            return template.makeCardEdit(card);
+            return template.makeCardEdit(card, seriesRepository.findAll());
         }
         cardRepository.save(card);
         return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") long id, Model model) {
+    public String deleteCard(@PathVariable("id") long id, Model model) {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid card id:" + id));
         cardRepository.delete(card);

@@ -6,6 +6,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.ui.Model;
 
 import de.gmasil.collection.card.Card;
+import de.gmasil.collection.series.Series;
 
 public class Template {
     public static final String INDEX = "index";
@@ -52,6 +53,47 @@ public class Template {
         return makeApp("generic", "text");
     }
 
+    // series
+
+    public String makeSeriesList(List<Series> series) {
+        setSite(APP);
+        setFragmentFile("series-crud");
+        setFragment("list");
+        addAttribute("series", series);
+        return INDEX;
+    }
+
+    public String makeSeriesAdd() {
+        return makeSeriesAdd(false);
+    }
+
+    public String makeSeriesAdd(boolean nameAlreadyExists) {
+        setSite(APP);
+        setFragmentFile("series-crud");
+        setFragment(ADD_EDIT);
+        setMethod("add");
+        if (nameAlreadyExists) {
+            addAttribute("namealreadyexists", nameAlreadyExists);
+        }
+        return INDEX;
+    }
+
+    public String makeSeriesEdit(Series series) {
+        return makeSeriesEdit(series, false);
+    }
+
+    public String makeSeriesEdit(Series series, boolean nameAlreadyExists) {
+        setSite(APP);
+        setFragmentFile("series-crud");
+        setFragment(ADD_EDIT);
+        setMethod("edit");
+        addAttribute("series", series);
+        if (nameAlreadyExists) {
+            addAttribute("namealreadyexists", nameAlreadyExists);
+        }
+        return INDEX;
+    }
+
     // card
 
     public String makeCardList(List<Card> cards) {
@@ -62,20 +104,22 @@ public class Template {
         return INDEX;
     }
 
-    public String makeCardAdd() {
+    public String makeCardAdd(List<Series> series) {
         setSite(APP);
         setFragmentFile("card-crud");
         setFragment(ADD_EDIT);
         setMethod("add");
+        addAttribute("series", series);
         return INDEX;
     }
 
-    public String makeCardEdit(Card card) {
+    public String makeCardEdit(Card card, List<Series> series) {
         setSite(APP);
         setFragmentFile("card-crud");
         setFragment(ADD_EDIT);
         setMethod("edit");
         addAttribute("card", card);
+        addAttribute("series", series);
         return INDEX;
     }
 

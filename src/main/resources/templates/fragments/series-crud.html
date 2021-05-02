@@ -1,0 +1,49 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Login Fragment</title>
+</head>
+</body>
+
+<div th:remove="tag" th:fragment="list">
+	<h2>Series</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="s : ${series}">
+				<td th:text="${s.getName()}"></td>
+				<td>
+					<a th:href="@{/series/edit/{id}(id=${s.getId()})}">
+						<em class="material-icons">edit</em>
+					</a>
+					<a th:href="@{/series/delete/{id}(id=${s.getId()})}">
+						<em class="material-icons">delete</em>
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div th:remove="tag" th:fragment="add-edit">
+	<h2 th:text="${(method == 'edit' ? 'Edit' : 'New') + ' Series'}">New/Edit Series</h2>
+	<form action="#" th:action="${'/series/' + (method == 'edit' ? 'edit/' + series.id : 'add')}" th:object="${series}" method="post">
+		<div class="form-element">
+			<label for="series-crud-name">Name:</label>
+			<input id="series-crud-name" type="text" th:field="*{name}" />
+			<span class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+			<span class="field-error" th:if="${namealreadyexists != null}">Name already exists</span>
+		</div>
+		<div class="form-element">
+			<button type="submit" th:text="${method == 'edit' ? 'Edit' : 'Add'}">Submit</button>
+		</div>
+	</form>
+</div>
+
+</body>
+</html>

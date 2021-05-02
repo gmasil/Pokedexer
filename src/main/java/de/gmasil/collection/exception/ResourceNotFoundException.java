@@ -1,4 +1,4 @@
-package de.gmasil.collection.card;
+package de.gmasil.collection.exception;
 
 import java.io.Serializable;
 

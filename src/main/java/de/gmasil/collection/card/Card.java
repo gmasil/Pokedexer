@@ -9,6 +9,8 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,6 +21,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import de.gmasil.collection.series.Series;
 
 @Entity
 @Table
@@ -50,7 +54,9 @@ public class Card {
     @DateTimeFormat(pattern = "YYYY-MM-dd")
     private LocalDate gradingReceivedDate;
 
-    private String setName;
+    @ManyToOne
+    @JoinColumn(name = "series_id", nullable = true)
+    protected Series series;
 
     private Integer cardNumber;
 
@@ -142,12 +148,12 @@ public class Card {
         this.gradingReceivedDate = gradingReceivedDate;
     }
 
-    public String getSetName() {
-        return setName;
+    public Series getSeries() {
+        return series;
     }
 
-    public void setSetName(String setName) {
-        this.setName = setName;
+    public void setSeries(Series series) {
+        this.series = series;
     }
 
     public Integer getCardNumber() {

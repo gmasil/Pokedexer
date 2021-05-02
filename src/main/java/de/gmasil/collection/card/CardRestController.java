@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,34 +13,42 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.gmasil.collection.exception.ResourceNotFoundException;
+import de.gmasil.collection.series.Series;
+import de.gmasil.collection.series.SeriesRepository;
+
 @RestController
-//@RequestMapping("/api")
-@RequestMapping(path = "/api", produces = { MediaType.APPLICATION_JSON_VALUE })
+@RequestMapping("/api/card")
 public class CardRestController {
     @Autowired
     private CardRepository cardRepository;
 
-    @GetMapping("/cards")
-    public List<Card> getAllCards() {
+    @Autowired
+    private SeriesRepository seriesRepository;
+
+    @GetMapping("")
+    public List<Card> getAll() {
         return cardRepository.findAll();
     }
 
-    @PostMapping("/cards")
-    public Card createNote(@Valid @RequestBody Card card) {
+    @PostMapping("")
+    public Card create(@Valid @RequestBody Card card) {
         return cardRepository.save(card);
     }
 
-    @GetMapping("/cards/{id}")
-    public Card getCardById(@PathVariable(value = "id") Long cardId) {
+    @GetMapping("/{id}")
+    public Card getById(@PathVariable(value = "id") Long cardId) {
         return cardRepository.findById(cardId).orElseThrow(() -> new ResourceNotFoundException("Card", "id", cardId));
     }
 
-    @PutMapping("/cards/{id}")
-    public Card updateNote(@PathVariable(value = "id") Long cardId, @Valid @RequestBody Card cardDetails) {
+    @PutMapping("/{id}")
+    public Card update(@PathVariable(value = "id") Long cardId, @Valid @RequestBody Card cardDetails,
+            @RequestParam Long seriesId) {
         Card card = cardRepository.findById(cardId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", cardId));
+                .orElseThrow(() -> new ResourceNotFoundException("Card", "id", cardId));
         if (cardDetails.getName() != null) {
             card.setName(cardDetails.getName());
         }
@@ -66,8 +73,10 @@ public class CardRestController {
         if (cardDetails.getGradingReceivedDate() != null) {
             card.setGradingReceivedDate(cardDetails.getGradingReceivedDate());
         }
-        if (cardDetails.getSetName() != null) {
-            card.setSetName(cardDetails.getSetName());
+        if (seriesId != null) {
+            Series series = seriesRepository.findById(seriesId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Series", "id", cardId));
+            card.setSeries(series);
         }
         if (cardDetails.getCardNumber() != null) {
             card.setCardNumber(cardDetails.getCardNumber());
@@ -78,10 +87,10 @@ public class CardRestController {
         return cardRepository.save(card);
     }
 
-    @DeleteMapping("/cards/{id}")
-    public ResponseEntity<Object> deleteNote(@PathVariable(value = "id") Long noteId) {
-        Card note = cardRepository.findById(noteId)
-                .orElseThrow(() -> new ResourceNotFoundException("Note", "id", noteId));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable(value = "id") Long cardId) {
+        Card note = cardRepository.findById(cardId)
+                .orElseThrow(() -> new ResourceNotFoundException("Card", "id", cardId));
         cardRepository.delete(note);
         return ResponseEntity.ok().build();
     }

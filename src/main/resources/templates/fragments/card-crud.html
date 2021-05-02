@@ -34,11 +34,11 @@
 				<td th:text="${card.getPurchasePrice()}"></td>
 				<td th:text="${card.getGradingSendOffDate()}"></td>
 				<td th:text="${card.getGradingReceivedDate()}"></td>
-				<td th:text="${card.getSetName()}"></td>
+				<td th:text="${card.getSeries() != null ? card.getSeries().getName() : ''}"></td>
 				<td th:text="${card.getCardNumber()}"></td>
 				<td th:text="${card.getStatus()}"></td>
 				<td>
-					<a th:href="@{/edit/{id}(id=${card.getId})}">
+					<a th:href="@{/edit/{id}(id=${card.getId()})}">
 						<em class="material-icons">edit</em>
 					</a>
 					<a th:href="@{/delete/{id}(id=${card.getId()})}">
@@ -94,9 +94,10 @@
 			<span class="field-error" th:if="${#fields.hasErrors('gradingReceivedDate')}" th:errors="*{gradingReceivedDate}"></span>
 		</div>
 		<div class="form-element">
-			<label for="card-crud-setname">Set Name:</label>
-			<input id="card-crud-setname" type="text" th:field="*{setName}" />
-			<span class="field-error" th:if="${#fields.hasErrors('setName')}" th:errors="*{setName}"></span>
+			<select id="card-crud-select-series" th:field="*{series}">
+				<option data-placeholder="true" value=""></option>
+				<option th:each="s : ${series}" th:attr="selected=${card.getSeries() != null ? (card.getSeries().getId() == s.getId()) : true}" th:value="${s.getId()}" th:text="${s.getName()}"></option>
+			</select>
 		</div>
 		<div class="form-element">
 			<label for="card-crud-cardnumber">Card Number:</label>
@@ -112,6 +113,15 @@
 			<button type="submit" th:text="${method == 'edit' ? 'Edit' : 'Add'}">Submit</button>
 		</div>
 	</form>
+	<script type="text/javascript">
+		new SlimSelect({
+			select : '#card-crud-select-series',
+			placeholder : 'Select Series',
+			searchHighlight : true,
+			allowDeselect: true,
+			deselectLabel: '✖'
+		});
+	</script>
 </div>
 
 </body>
