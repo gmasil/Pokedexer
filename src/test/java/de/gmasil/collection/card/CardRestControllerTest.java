@@ -3,6 +3,7 @@ package de.gmasil.collection.card;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import de.gmasil.collection.series.Series;
 import de.gmasil.collection.tesutils.EnableDatabaseCleanup;
 import de.gmasil.collection.tesutils.RestTemplateFactory;
 
@@ -33,15 +35,35 @@ class CardRestControllerTest {
     private RestTemplateFactory factory;
 
     @Test
-    void testCreate() {
+    void testCreateWithoutSeries() {
         RestTemplate template = factory.getAuthenticatedRestTemplate();
         Card card = new Card();
         card.setName("Misty's Tears");
-        template.postForObject(url("/api/cards"), card, Card.class);
+        template.postForObject(url("/api/card"), card, Card.class);
         List<Card> cards = getCards(template);
         assertThat(cards, hasSize(1));
         card = cards.get(0);
         assertThat(card.getName(), is(equalTo("Misty's Tears")));
+        assertThat(card.getSeries(), is(nullValue()));
+    }
+
+    @Test
+    void testCreateWithSeries() {
+        RestTemplate template = factory.getAuthenticatedRestTemplate();
+        // create series
+        Series series = new Series();
+        series.setName("Gym");
+        series = template.postForObject(url("/api/series"), series, Series.class);
+        // create card
+        Card card = new Card();
+        card.setName("Misty's Tears");
+        card.setSeries(series);
+        template.postForObject(url("/api/card"), card, Card.class);
+        List<Card> cards = getCards(template);
+        assertThat(cards, hasSize(1));
+        card = cards.get(0);
+        assertThat(card.getName(), is(equalTo("Misty's Tears")));
+        assertThat(card.getSeries().getName(), is(equalTo("Gym")));
     }
 
     @Test
@@ -50,11 +72,11 @@ class CardRestControllerTest {
         // create card
         Card card = new Card();
         card.setName("Misty's Tears");
-        card = template.postForObject(url("/api/cards"), card, Card.class);
+        card = template.postForObject(url("/api/card"), card, Card.class);
         Long id = card.getId();
         assertThat(id, is(notNullValue()));
         // get card by id
-        card = template.getForObject(url("/api/cards/" + id), Card.class);
+        card = template.getForObject(url("/api/card/" + id), Card.class);
         assertThat(card.getId(), is(equalTo(id)));
         assertThat(card.getName(), is(equalTo("Misty's Tears")));
     }
@@ -65,31 +87,61 @@ class CardRestControllerTest {
         // get card by id
         Long id = 3867245L;
         assertThrows(HttpClientErrorException.NotFound.class, () -> {
-            template.getForObject(url("/api/cards/" + id), Card.class);
+            template.getForObject(url("/api/card/" + id), Card.class);
         });
     }
 
     @Test
-    void testUpdate() {
+    void testUpdateWithoutSeries() {
         RestTemplate template = factory.getAuthenticatedRestTemplate();
         // create card
         Card card = new Card();
         card.setName("Misty's Tears");
-        card.setSetName("1998 P.M. Japanese Gym");
+        card.setStatus("home");
         card.setCardNumber(123);
-        card = template.postForObject(url("/api/cards"), card, Card.class);
+        card = template.postForObject(url("/api/card"), card, Card.class);
         Long id = card.getId();
         assertThat(id, is(notNullValue()));
         // update card
         card = new Card();
         card.setName("New Name");
-        card.setSetName("New Set");
-        template.put(url("/api/cards/" + id), card);
-        card = template.getForObject(url("/api/cards/" + id), Card.class);
+        card.setStatus("PSA");
+        template.put(url("/api/card/" + id), card);
+        card = template.getForObject(url("/api/card/" + id), Card.class);
         assertThat(card.getId(), is(equalTo(id)));
         assertThat(card.getName(), is(equalTo("New Name")));
-        assertThat(card.getSetName(), is(equalTo("New Set")));
+        assertThat(card.getStatus(), is(equalTo("PSA")));
         assertThat(card.getCardNumber(), is(equalTo(123)));
+        assertThat(card.getSeries(), is(nullValue()));
+    }
+
+    @Test
+    void testUpdateWithSeries() {
+        RestTemplate template = factory.getAuthenticatedRestTemplate();
+        // create series
+        Series series = new Series();
+        series.setName("Gym");
+        series = template.postForObject(url("/api/series"), series, Series.class);
+        // create card
+        Card card = new Card();
+        card.setName("Misty's Tears");
+        card.setStatus("home");
+        card.setCardNumber(123);
+        card = template.postForObject(url("/api/card"), card, Card.class);
+        Long id = card.getId();
+        assertThat(id, is(notNullValue()));
+        // update card
+        card = new Card();
+        card.setName("New Name");
+        card.setStatus("PSA");
+        card.setSeries(series);
+        template.put(url("/api/card/" + id), card);
+        card = template.getForObject(url("/api/card/" + id), Card.class);
+        assertThat(card.getId(), is(equalTo(id)));
+        assertThat(card.getName(), is(equalTo("New Name")));
+        assertThat(card.getStatus(), is(equalTo("PSA")));
+        assertThat(card.getCardNumber(), is(equalTo(123)));
+        assertThat(card.getSeries().getName(), is(equalTo("Gym")));
     }
 
     @Test
@@ -98,11 +150,11 @@ class CardRestControllerTest {
         // create card
         Card card = new Card();
         card.setName("Misty's Tears");
-        card = template.postForObject(url("/api/cards"), card, Card.class);
+        card = template.postForObject(url("/api/card"), card, Card.class);
         Long id = card.getId();
         assertThat(id, is(notNullValue()));
         // delete card
-        template.delete(url("/api/cards/" + id));
+        template.delete(url("/api/card/" + id));
         // check
         List<Card> cards = getCards(template);
         assertThat(cards, hasSize(0));
@@ -111,7 +163,7 @@ class CardRestControllerTest {
     // HELPER
 
     private List<Card> getCards(RestTemplate template) {
-        ResponseEntity<List<Card>> responseEntity = template.exchange(url("/api/cards"), HttpMethod.GET, null,
+        ResponseEntity<List<Card>> responseEntity = template.exchange(url("/api/card"), HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Card>>() {
                 });
         return responseEntity.getBody();

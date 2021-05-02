@@ -37,7 +37,6 @@ public class InitialSetupRunner {
             userService.encodePassword(user);
             userService.save(user);
         }
-        createTestData();
     }
 
     @Autowired
@@ -46,6 +45,7 @@ public class InitialSetupRunner {
     @Autowired
     private SeriesRepository seriesRepo;
 
+    @EventListener(ApplicationReadyEvent.class)
     public void createTestData() {
         Series initialSeries = null;
         if (seriesRepo.count() == 0) {

@@ -13,21 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.gmasil.collection.exception.ResourceNotFoundException;
-import de.gmasil.collection.series.Series;
-import de.gmasil.collection.series.SeriesRepository;
 
 @RestController
 @RequestMapping("/api/card")
 public class CardRestController {
     @Autowired
     private CardRepository cardRepository;
-
-    @Autowired
-    private SeriesRepository seriesRepository;
 
     @GetMapping("")
     public List<Card> getAll() {
@@ -45,8 +39,7 @@ public class CardRestController {
     }
 
     @PutMapping("/{id}")
-    public Card update(@PathVariable(value = "id") Long cardId, @Valid @RequestBody Card cardDetails,
-            @RequestParam Long seriesId) {
+    public Card update(@PathVariable(value = "id") Long cardId, @Valid @RequestBody Card cardDetails) {
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new ResourceNotFoundException("Card", "id", cardId));
         if (cardDetails.getName() != null) {
@@ -73,10 +66,8 @@ public class CardRestController {
         if (cardDetails.getGradingReceivedDate() != null) {
             card.setGradingReceivedDate(cardDetails.getGradingReceivedDate());
         }
-        if (seriesId != null) {
-            Series series = seriesRepository.findById(seriesId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Series", "id", cardId));
-            card.setSeries(series);
+        if (cardDetails.getSeries() != null) {
+            card.setSeries(cardDetails.getSeries());
         }
         if (cardDetails.getCardNumber() != null) {
             card.setCardNumber(cardDetails.getCardNumber());
