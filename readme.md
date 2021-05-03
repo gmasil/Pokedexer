@@ -32,7 +32,7 @@ Then run the application with either JVM argument `-Dspring.profiles.active=post
 
 ### SASS Stylesheets
 
-Pokédexer uses SASS stylesheets. You can automatically let them be compiled ti `*.css` files when you run the maven command
+Pokédexer uses SASS stylesheets. You can automatically let them be compiled to `*.css` files when you run the maven command
 
 ```bash
 mvn sass:watch
