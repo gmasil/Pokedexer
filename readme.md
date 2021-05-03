@@ -1,8 +1,15 @@
-# Collector
-Name subject to change.
+# Pokédexer
+Software to track Pokémon card collections.
 
-## Development
-### Watch SASS files
-```bash
-mvn sass:watch
-```
+## License
+[GNU GPL v3 License](LICENSE.md)
+
+Pokédexer is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Pokédexer is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
