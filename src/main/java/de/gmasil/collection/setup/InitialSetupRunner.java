@@ -43,6 +43,9 @@ public class InitialSetupRunner {
     @Autowired
     private UserService userService;
 
+    @Value("${setup.user:false}")
+    private boolean setupUser;
+
     @Value("${setup.user.name:#{null}}")
     private String username;
 
@@ -51,7 +54,7 @@ public class InitialSetupRunner {
 
     @EventListener(ApplicationReadyEvent.class)
     public void setupInitialUser() {
-        if (userRepository.count() == 0 && username != null && password != null) {
+        if (setupUser && userRepository.count() == 0 && username != null && password != null) {
             User user = new User();
             user.setName(username);
             user.setPassword(password);
