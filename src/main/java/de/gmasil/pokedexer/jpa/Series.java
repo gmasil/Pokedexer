@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.series;
+package de.gmasil.pokedexer.jpa;
 
 import java.util.Date;
 import java.util.Set;
@@ -39,8 +39,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import de.gmasil.pokedexer.card.Card;
 
 @Entity
 @Table

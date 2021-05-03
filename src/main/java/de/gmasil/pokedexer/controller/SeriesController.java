@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.frontend;
+package de.gmasil.pokedexer.controller;
 
 import java.util.List;
 
@@ -33,9 +33,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import de.gmasil.pokedexer.frontend.advisor.Template;
-import de.gmasil.pokedexer.series.Series;
-import de.gmasil.pokedexer.series.SeriesRepository;
+import de.gmasil.pokedexer.controller.advisor.Template;
+import de.gmasil.pokedexer.jpa.Series;
+import de.gmasil.pokedexer.jpa.SeriesRepository;
 
 @Controller
 @RequestMapping("/series")

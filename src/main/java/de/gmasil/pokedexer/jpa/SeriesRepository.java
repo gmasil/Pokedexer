@@ -17,15 +17,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.frontend.converter;
+package de.gmasil.pokedexer.jpa;
 
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@Component
-public class StringToDoubleConverter implements Converter<String, Double> {
-    @Override
-    public Double convert(String source) {
-        return Double.parseDouble(source.replace(',', '.'));
-    }
+@Repository
+public interface SeriesRepository extends JpaRepository<Series, Long> {
+
 }

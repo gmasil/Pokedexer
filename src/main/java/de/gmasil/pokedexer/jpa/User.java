@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.security;
+package de.gmasil.pokedexer.jpa;
 
 import java.io.Serializable;
 import java.util.Collection;

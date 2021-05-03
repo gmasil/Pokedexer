@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.frontend.thymeleaf;
+package de.gmasil.pokedexer.config.thymeleaf;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -28,7 +28,7 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import de.gmasil.pokedexer.card.Card;
+import de.gmasil.pokedexer.jpa.Card;
 
 @Service
 public class ThymeleafUtils {

@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.frontend;
+package de.gmasil.pokedexer.controller;
 
 import java.util.List;
 
@@ -31,13 +31,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import de.gmasil.pokedexer.card.Card;
-import de.gmasil.pokedexer.card.CardRepository;
-import de.gmasil.pokedexer.frontend.advisor.Template;
-import de.gmasil.pokedexer.series.SeriesRepository;
+import de.gmasil.pokedexer.controller.advisor.Template;
+import de.gmasil.pokedexer.jpa.Card;
+import de.gmasil.pokedexer.jpa.CardRepository;
+import de.gmasil.pokedexer.jpa.SeriesRepository;
+import de.gmasil.pokedexer.services.ValidationService;
 
 @Controller
 public class IndexController {
+
+    @Autowired
+    private ValidationService validationService;
+
     @Autowired
     private CardRepository cardRepository;
 
@@ -99,10 +104,10 @@ public class IndexController {
     }
 
     private void handleCardBindingErrors(BindingResult bindingResult) {
-        ValidationUtils.handleException(bindingResult.getFieldError("certNumber"), "cert number");
-        ValidationUtils.handleException(bindingResult.getFieldError("grade"));
-        ValidationUtils.handleException(bindingResult.getFieldError("population"));
-        ValidationUtils.handleException(bindingResult.getFieldError("purchasePrice"), "purchase price");
-        ValidationUtils.handleException(bindingResult.getFieldError("cardNumber"), "card number");
+        validationService.handleException(bindingResult.getFieldError("certNumber"), "cert number");
+        validationService.handleException(bindingResult.getFieldError("grade"));
+        validationService.handleException(bindingResult.getFieldError("population"));
+        validationService.handleException(bindingResult.getFieldError("purchasePrice"), "purchase price");
+        validationService.handleException(bindingResult.getFieldError("cardNumber"), "card number");
     }
 }

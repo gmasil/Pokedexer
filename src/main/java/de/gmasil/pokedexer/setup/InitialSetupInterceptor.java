@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import de.gmasil.pokedexer.security.UserService;
+import de.gmasil.pokedexer.services.UserService;
 
 @Service
 public class InitialSetupInterceptor implements HandlerInterceptor {

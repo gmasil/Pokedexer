@@ -17,17 +17,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.frontend;
+package de.gmasil.pokedexer.services;
 
 import java.lang.reflect.Field;
 
+import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 
-public class ValidationUtils {
-    private ValidationUtils() {
-    }
-
-    public static boolean setErrorMessage(FieldError fieldError, String message) {
+@Service
+public class ValidationService {
+    public boolean setErrorMessage(FieldError fieldError, String message) {
         try {
             Field field = FieldError.class.getSuperclass().getSuperclass().getDeclaredField("defaultMessage");
             field.setAccessible(true);
@@ -38,14 +37,14 @@ public class ValidationUtils {
         return true;
     }
 
-    public static boolean handleException(FieldError fieldError) {
+    public boolean handleException(FieldError fieldError) {
         if (fieldError != null) {
             return handleException(fieldError, fieldError.getField());
         }
         return true;
     }
 
-    public static boolean handleException(FieldError fieldError, String fieldName) {
+    public boolean handleException(FieldError fieldError, String fieldName) {
         if (fieldError != null && fieldError.isBindingFailure()) {
             String message;
             if (fieldError.getRejectedValue().toString().isEmpty()) {
@@ -53,7 +52,7 @@ public class ValidationUtils {
             } else {
                 message = String.format("The %s is invalid", fieldName);
             }
-            return ValidationUtils.setErrorMessage(fieldError, message);
+            return setErrorMessage(fieldError, message);
         }
         return true;
     }

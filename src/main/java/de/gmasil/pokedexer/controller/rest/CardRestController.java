@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.card;
+package de.gmasil.pokedexer.controller.rest;
 
 import java.util.List;
 
@@ -35,6 +35,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.gmasil.pokedexer.exception.ResourceNotFoundException;
+import de.gmasil.pokedexer.jpa.Card;
+import de.gmasil.pokedexer.jpa.CardRepository;
 
 @RestController
 @RequestMapping("/api/card")

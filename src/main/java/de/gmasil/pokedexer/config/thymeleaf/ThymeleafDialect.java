@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.frontend.thymeleaf;
+package de.gmasil.pokedexer.config.thymeleaf;
 
 import java.util.Collections;
 import java.util.Set;

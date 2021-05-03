@@ -17,17 +17,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.frontend;
+package de.gmasil.pokedexer.jpa;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import de.gmasil.pokedexer.frontend.advisor.Template;
+@Repository
+public interface CardRepository extends JpaRepository<Card, Long> {
 
-@Controller
-public class LoginController {
-    @GetMapping("/login")
-    public String login(Template template) {
-        return template.makeLogin();
-    }
 }

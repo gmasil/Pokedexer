@@ -17,15 +17,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.frontend.advisor;
+package de.gmasil.pokedexer.controller.advisor;
 
 import java.util.List;
 
 import org.springframework.lang.Nullable;
 import org.springframework.ui.Model;
 
-import de.gmasil.pokedexer.card.Card;
-import de.gmasil.pokedexer.series.Series;
+import de.gmasil.pokedexer.jpa.Card;
+import de.gmasil.pokedexer.jpa.Series;
 
 public class Template {
     public static final String INDEX = "index";

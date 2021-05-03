@@ -17,21 +17,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.frontend.converter;
+package de.gmasil.pokedexer.services;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class StringToLocalDateTimeConverter implements Converter<String, LocalDate> {
-	@Override
-	public LocalDate convert(String source) {
-		if (source.isEmpty()) {
-			return null;
-		}
-		return LocalDate.parse(source, DateTimeFormatter.ISO_LOCAL_DATE);
-	}
+    @Override
+    public LocalDate convert(String source) {
+        if (source.isEmpty()) {
+            return null;
+        }
+        return LocalDate.parse(source, DateTimeFormatter.ISO_LOCAL_DATE);
+    }
 }

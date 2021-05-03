@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.frontend;
+package de.gmasil.pokedexer.controller;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import de.gmasil.pokedexer.frontend.advisor.Template;
+import de.gmasil.pokedexer.controller.advisor.Template;
 
 @Controller
 public class CustomErrorController implements ErrorController {

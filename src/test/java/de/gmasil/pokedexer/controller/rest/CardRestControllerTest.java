@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.card;
+package de.gmasil.pokedexer.controller.rest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -40,8 +40,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import de.gmasil.pokedexer.card.Card;
-import de.gmasil.pokedexer.series.Series;
+import de.gmasil.pokedexer.jpa.Card;
+import de.gmasil.pokedexer.jpa.Series;
 import de.gmasil.pokedexer.tesutils.EnableDatabaseCleanup;
 import de.gmasil.pokedexer.tesutils.RestTemplateFactory;
 

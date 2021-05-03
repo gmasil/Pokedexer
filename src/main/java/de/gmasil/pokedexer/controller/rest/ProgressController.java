@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.card;
+package de.gmasil.pokedexer.controller.rest;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import de.gmasil.pokedexer.frontend.advisor.Template;
+import de.gmasil.pokedexer.controller.advisor.Template;
 
 @RestController
 public class ProgressController {

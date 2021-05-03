@@ -29,9 +29,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import de.gmasil.pokedexer.frontend.advisor.Template;
-import de.gmasil.pokedexer.security.User;
-import de.gmasil.pokedexer.security.UserService;
+import de.gmasil.pokedexer.controller.advisor.Template;
+import de.gmasil.pokedexer.jpa.User;
+import de.gmasil.pokedexer.services.UserService;
 
 @Controller
 public class SetupController {

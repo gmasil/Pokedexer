@@ -27,13 +27,13 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import de.gmasil.pokedexer.card.Card;
-import de.gmasil.pokedexer.card.CardRepository;
-import de.gmasil.pokedexer.security.User;
-import de.gmasil.pokedexer.security.UserRepository;
-import de.gmasil.pokedexer.security.UserService;
-import de.gmasil.pokedexer.series.Series;
-import de.gmasil.pokedexer.series.SeriesRepository;
+import de.gmasil.pokedexer.jpa.Card;
+import de.gmasil.pokedexer.jpa.CardRepository;
+import de.gmasil.pokedexer.jpa.Series;
+import de.gmasil.pokedexer.jpa.SeriesRepository;
+import de.gmasil.pokedexer.jpa.User;
+import de.gmasil.pokedexer.jpa.UserRepository;
+import de.gmasil.pokedexer.services.UserService;
 
 @Component
 public class InitialSetupRunner {
