@@ -1,21 +1,21 @@
 /**
- * ChestSort
- * Copyright © 2021 gmasil.de
+ * Collection
+ * Copyright © 2021 Gmasil
  *
- * This file is part of ChestSort.
+ * This file is part of Collection.
  *
- * ChestSort is free software: you can redistribute it and/or modify
+ * Collection is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * ChestSort is distributed in the hope that it will be useful,
+ * Collection is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with ChestSort. If not, see <https://www.gnu.org/licenses/>.
+ * along with Collection.  If not, see <https://www.gnu.org/licenses/>.
  */
 package de.gmasil.collection.tesutils;
 
