@@ -274,6 +274,46 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- disable deployment of java artifact -->
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <!-- docker image deploy -->
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <from>
+                        <image>openjdk:8-jre-slim</image>
+                    </from>
+                    <to>
+                        <image>registry.gmasil.de/docker/${project.artifactId}</image>
+                        <tags>
+                            <tag>latest</tag>
+                            <tag>${project.version}</tag>
+                        </tags>
+                    </to>
+                    <container>
+                        <mainClass>de.gmasil.collection.Application</mainClass>
+                        <ports>
+                            <port>8080</port>
+                        </ports>
+                        <creationTime>${maven.build.timestamp}</creationTime>
+                    </container>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <!-- eclipse lifecycle mapping -->
         <pluginManagement>
