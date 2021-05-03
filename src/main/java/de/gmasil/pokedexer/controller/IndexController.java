@@ -32,13 +32,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import de.gmasil.pokedexer.controller.advisor.Template;
+import de.gmasil.pokedexer.dto.CardDTO;
 import de.gmasil.pokedexer.jpa.Card;
 import de.gmasil.pokedexer.jpa.CardRepository;
 import de.gmasil.pokedexer.jpa.SeriesRepository;
+import de.gmasil.pokedexer.services.ModelConverter;
 import de.gmasil.pokedexer.services.ValidationService;
 
 @Controller
 public class IndexController {
+
+    @Autowired
+    private ModelConverter converter;
 
     @Autowired
     private ValidationService validationService;
@@ -52,39 +57,40 @@ public class IndexController {
     @GetMapping("/")
     public String index(Template template) {
         List<Card> cards = cardRepository.findAll();
-        return template.makeCardList(cards);
+        return template.makeCardList(converter.mapCard(cards));
     }
 
     @GetMapping("/add")
-    public String showForm(Template template, Card card) {
+    public String showForm(Template template, CardDTO cardDTO) {
         return template.makeCardAdd(seriesRepository.findAll());
     }
 
     @PostMapping("/add")
-    public String addCard(Template template, @Valid Card card, BindingResult bindingResult) {
+    public String addCard(Template template, @Valid CardDTO cardDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             handleCardBindingErrors(bindingResult);
             return template.makeCardAdd(seriesRepository.findAll());
         }
-        cardRepository.save(card);
+        cardRepository.save(converter.mapCardDTO(cardDTO));
         return "redirect:";
     }
 
     @GetMapping("/edit/{id}")
     public String showUpdateForm(Template template, @PathVariable("id") long id) {
+        // TODO: use ResourceNotFoundException
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid card id:" + id));
-        return template.makeCardEdit(card, seriesRepository.findAll());
+        return template.makeCardEdit(converter.mapCard(card), seriesRepository.findAll());
     }
 
     @PostMapping("/edit/{id}")
-    public String updateCard(Template template, @PathVariable("id") long id, @Valid Card card,
+    public String updateCard(Template template, @PathVariable("id") long id, @Valid CardDTO cardDTO,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             handleCardBindingErrors(bindingResult);
-            return template.makeCardEdit(card, seriesRepository.findAll());
+            return template.makeCardEdit(cardDTO, seriesRepository.findAll());
         }
-        cardRepository.save(card);
+        cardRepository.save(converter.mapCardDTO(cardDTO));
         return "redirect:/";
     }
 
@@ -92,7 +98,7 @@ public class IndexController {
     public String deleteCardConfirm(Template template, @PathVariable("id") long id, Model model) {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid card id:" + id));
-        return template.makeCardDeleteConfirm(card);
+        return template.makeCardDeleteConfirm(converter.mapCard(card));
     }
 
     @PostMapping("/delete/{id}")

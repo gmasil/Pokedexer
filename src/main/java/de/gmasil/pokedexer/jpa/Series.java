@@ -33,8 +33,8 @@ import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -50,8 +50,8 @@ public class Series {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    @NotBlank(message = "The name must not be empty")
+    @Length(min = 1)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "series")

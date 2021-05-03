@@ -56,7 +56,7 @@
 
 <div th:remove="tag" th:fragment="add-edit">
 	<h2 th:text="${(method == 'edit' ? 'Edit' : 'New') + ' Series'}">New/Edit Series</h2>
-	<form action="#" th:action="${'/series/' + (method == 'edit' ? 'edit/' + series.id : 'add')}" th:object="${series}" method="post">
+	<form action="#" th:action="${'/series/' + (method == 'edit' ? 'edit/' + seriesDTO.getId() : 'add')}" th:object="${seriesDTO}" method="post">
 		<div class="form-row">
 			<div class="col-12">
 				<div class="form-group">
@@ -78,7 +78,7 @@
 	<h2>Delete Series</h2>
 	<p>
 		Are you sure you want to delete the series
-		<b th:text="${'&nbsp;' + series.getName()}"></b>
+		<strong th:text="${'&nbsp;' + series.getName()}"></strong>
 		?
 	</p>
 	<form action="#" th:action="${'/series/delete/' + series.getId()}" method="post">

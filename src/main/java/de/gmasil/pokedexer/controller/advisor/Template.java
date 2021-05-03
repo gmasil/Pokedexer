@@ -24,6 +24,8 @@ import java.util.List;
 import org.springframework.lang.Nullable;
 import org.springframework.ui.Model;
 
+import de.gmasil.pokedexer.dto.CardDTO;
+import de.gmasil.pokedexer.dto.SeriesDTO;
 import de.gmasil.pokedexer.jpa.Card;
 import de.gmasil.pokedexer.jpa.Series;
 
@@ -81,7 +83,7 @@ public class Template {
 
     // series
 
-    public String makeSeriesList(List<Series> series) {
+    public String makeSeriesList(List<SeriesDTO> series) {
         setSite(APP);
         setFragmentFile("series-crud");
         setFragment("list");
@@ -104,23 +106,23 @@ public class Template {
         return INDEX;
     }
 
-    public String makeSeriesEdit(Series series) {
+    public String makeSeriesEdit(SeriesDTO series) {
         return makeSeriesEdit(series, false);
     }
 
-    public String makeSeriesEdit(Series series, boolean nameAlreadyExists) {
+    public String makeSeriesEdit(SeriesDTO series, boolean nameAlreadyExists) {
         setSite(APP);
         setFragmentFile("series-crud");
         setFragment(ADD_EDIT);
         setMethod("edit");
-        addAttribute("series", series);
+        addAttribute("seriesDTO", series);
         if (nameAlreadyExists) {
             addAttribute("namealreadyexists", nameAlreadyExists);
         }
         return INDEX;
     }
 
-    public String makeSeriesDeleteConfirm(Series series) {
+    public String makeSeriesDeleteConfirm(SeriesDTO series) {
         setSite(APP);
         setFragmentFile("series-crud");
         setFragment("delete-confirm");
@@ -130,7 +132,7 @@ public class Template {
 
     // card
 
-    public String makeCardList(List<Card> cards) {
+    public String makeCardList(List<CardDTO> cards) {
         setSite(APP);
         setFragmentFile("card-crud");
         setFragment("list");
@@ -148,18 +150,18 @@ public class Template {
         return INDEX;
     }
 
-    public String makeCardEdit(Card card, List<Series> series) {
+    public String makeCardEdit(CardDTO cardDTO, List<Series> series) {
         setSite(APP);
         setFragmentFile("card-crud");
         setFragment(ADD_EDIT);
         setMethod("edit");
-        addAttribute("card", card);
+        addAttribute("cardDTO", cardDTO);
         addAttribute("series", series);
         addAttribute("progressvalues", Card.PROGRESS_VALUES);
         return INDEX;
     }
 
-    public String makeCardDeleteConfirm(Card card) {
+    public String makeCardDeleteConfirm(CardDTO card) {
         setSite(APP);
         setFragmentFile("card-crud");
         setFragment("delete-confirm");
