@@ -34,8 +34,8 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Entity
-@Table
+@Entity(name = "USERS")
+@Table(name = "USERS")
 public class User implements UserDetails, Serializable {
 
     @Id

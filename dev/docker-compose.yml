@@ -1,0 +1,14 @@
+version: '3.0'
+
+services:
+  pokedexer-db:
+    image: postgres:9.6-alpine
+    container_name: pokedexer-db
+    environment:
+      - "POSTGRES_USER=pokedexer"
+      - "POSTGRES_PASSWORD=pokedexer"
+      - "POSTGRES_DB=pokedexer"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./data/postgres:/var/lib/postgresql/data"
