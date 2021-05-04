@@ -30,7 +30,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import de.gmasil.pokedexer.controller.advisor.Template;
+import de.gmasil.pokedexer.dto.UserDTO;
 import de.gmasil.pokedexer.jpa.User;
+import de.gmasil.pokedexer.services.EntityMapper;
 import de.gmasil.pokedexer.services.UserService;
 
 @Controller
@@ -38,8 +40,11 @@ public class SetupController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EntityMapper entityMapper;
+
     @GetMapping("/setup")
-    public String setup(Template template, User user) {
+    public String setup(Template template, UserDTO userDTO) {
         if (userService.hasUsers()) {
             return template.makeSetupAlreadyDone();
         } else {
@@ -48,11 +53,12 @@ public class SetupController {
     }
 
     @PostMapping("/setup")
-    public String setupPost(HttpServletResponse response, Template template, Model model, @Valid User user,
+    public String setupPost(HttpServletResponse response, Template template, Model model, @Valid UserDTO userDTO,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return template.makeSetup();
         }
+        User user = entityMapper.mapUserDTO(userDTO);
         userService.encodePassword(user);
         userService.save(user);
         return template.makeSetupAlreadyDone();

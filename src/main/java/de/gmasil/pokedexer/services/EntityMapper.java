@@ -21,42 +21,56 @@ package de.gmasil.pokedexer.services;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
-import org.modelmapper.config.Configuration;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 
 import de.gmasil.pokedexer.dto.CardDTO;
 import de.gmasil.pokedexer.dto.SeriesDTO;
+import de.gmasil.pokedexer.dto.UserDTO;
 import de.gmasil.pokedexer.jpa.Card;
 import de.gmasil.pokedexer.jpa.Series;
+import de.gmasil.pokedexer.jpa.User;
 
 @Service
 public class EntityMapper {
     private ModelMapper mapper = new ModelMapper();
 
-    @PostConstruct
-    private void configureModelMapper() {
+    public EntityMapper() {
         mapper.getConfiguration() //
                 .setFieldMatchingEnabled(true) //
-                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
+                .setMatchingStrategy(MatchingStrategies.STRICT);
+    }
 
-        // do not set ID of entity when mapping data from DTO to DAO
-        mapper.addMappings(new PropertyMap<SeriesDTO, Series>() {
-            @Override
-            protected void configure() {
-                skip().setId(source.getId());
-            }
-        });
-        mapper.addMappings(new PropertyMap<CardDTO, Card>() {
-            @Override
-            protected void configure() {
-                skip().setId(source.getId());
-            }
-        });
+    // user
+
+    public User mapUserDTO(UserDTO userDTO) {
+        return mapper.map(userDTO, User.class);
+    }
+
+    public List<User> mapUserDTO(List<UserDTO> userDTO) {
+        return mapper.map(userDTO, new TypeToken<List<User>>() {
+        }.getType());
+    }
+
+    public UserDTO mapUser(User user) {
+        return mapper.map(user, UserDTO.class);
+    }
+
+    public List<UserDTO> mapUser(List<User> user) {
+        return mapper.map(user, new TypeToken<List<UserDTO>>() {
+        }.getType());
+    }
+
+    public UserDTO patchUserDTO(User src, UserDTO dest) {
+        mapper.map(src, dest);
+        return dest;
+    }
+
+    public User patchUser(UserDTO src, User dest) {
+        mapper.map(src, dest);
+        return dest;
     }
 
     // card
@@ -79,7 +93,7 @@ public class EntityMapper {
         }.getType());
     }
 
-    public CardDTO patchCard(Card src, CardDTO dest) {
+    public CardDTO patchCardDTO(Card src, CardDTO dest) {
         mapper.map(src, dest);
         return dest;
     }
@@ -109,7 +123,7 @@ public class EntityMapper {
         }.getType());
     }
 
-    public SeriesDTO patchSeries(Series src, SeriesDTO dest) {
+    public SeriesDTO patchSeriesDTO(Series src, SeriesDTO dest) {
         mapper.map(src, dest);
         return dest;
     }

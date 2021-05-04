@@ -96,12 +96,12 @@ public class Card implements Serializable {
         // required by hibernate
     }
 
-    public Long getId() {
-        return id;
+    public Card(Long id) {
+        this.id = id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

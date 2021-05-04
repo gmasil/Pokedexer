@@ -72,6 +72,10 @@ public class Series implements Serializable {
         // required by hibernate
     }
 
+    public Series(long id) {
+        this.id = id;
+    }
+
     /**
      * Important to remove foreign keys from referenced objects before deleting
      * entries to maintain data integrity
@@ -85,10 +89,6 @@ public class Series implements Serializable {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

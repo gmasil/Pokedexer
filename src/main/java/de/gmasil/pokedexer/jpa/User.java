@@ -31,6 +31,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -40,10 +41,10 @@ public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    private Long id;
 
-    @NotEmpty
-    @Column(nullable = false, unique = true)
+    @Length(min = 1)
+    @Column(unique = true, nullable = false)
     private String name;
 
     @NotEmpty
@@ -54,6 +55,10 @@ public class User implements UserDetails, Serializable {
 
     public User() {
         super();
+    }
+
+    public User(Long id) {
+        this.id = id;
     }
 
     public User(String name) {
