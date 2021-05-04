@@ -37,6 +37,8 @@ import de.gmasil.pokedexer.services.UserService;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private static final String LOGIN = "/login";
+
     @Autowired
     private UserService userService;
 
@@ -49,15 +51,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	            .antMatchers("/admin/**").hasAuthority("ADMIN")
 	            .antMatchers("/admin").hasAuthority("ADMIN")
 	            .antMatchers("/setup").permitAll()
-	            .antMatchers("/login").permitAll()
+	            .antMatchers(LOGIN).permitAll()
 	            .antMatchers("/logout").permitAll()
 	            .antMatchers("/error").permitAll()
 	            .antMatchers("/public/**").permitAll()
 	            .antMatchers("/api/progress/**").permitAll()
 	            .anyRequest().authenticated()
         .and().
-            formLogin().loginPage("/login").failureUrl("/login?error")
-            .loginProcessingUrl("/login")
+            formLogin().loginPage(LOGIN).failureUrl("/login?error")
+            .loginProcessingUrl(LOGIN)
             .usernameParameter("username")
             .passwordParameter("password")
         .and().logout()

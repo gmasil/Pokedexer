@@ -19,6 +19,7 @@
  */
 package de.gmasil.pokedexer.jpa;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -44,7 +45,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
-public class Card {
+public class Card implements Serializable {
+    // TODO: add enum to DB
     public static final String[] PROGRESS_VALUES = new String[] { "none", "interested", "bought", "ungraded",
             "in grading", "graded" };
 

@@ -32,23 +32,22 @@ import de.gmasil.pokedexer.jpa.Series;
 public class Template {
     public static final String INDEX = "index";
     public static final String ERROR = "error";
+    public static final String LOGIN = "login";
 
     public static final String APP = "app";
     public static final String SETUP = "setup";
 
-    public static final String CATEGORY = "category";
-    public static final String CATEGORY_DTO = "categoryDTO";
-    public static final String CATEGORIES = "categories";
+    public static final String CARD = "card";
+    public static final String CARD_CRUD = "card-crud";
+    public static final String SERIES = "series";
+    public static final String SERIES_CRUD = "series-crud";
 
-    public static final String TRANSACTION = "transaction";
-    public static final String TRANSACTION_DTO = "transactionDTO";
-    public static final String TRANSACTIONS = "transactions";
-
-    public static final String CATEGORIES_CRUD = "categories-crud";
-    public static final String TRANSACTIONS_CRUD = "transactions-crud";
+    public static final String GENERIC = "generic";
     public static final String LIST = "list";
     public static final String ADD_EDIT = "add-edit";
+    public static final String ADD = "add";
     public static final String EDIT = "edit";
+    public static final String TEXT = "text";
 
     private Model model;
 
@@ -59,7 +58,7 @@ public class Template {
     // public
 
     public String makeLogin() {
-        setSite("login");
+        setSite(LOGIN);
         return INDEX;
     }
 
@@ -70,8 +69,8 @@ public class Template {
     }
 
     public String makeText(String text) {
-        model.addAttribute("text", text);
-        return makeApp("generic", "text");
+        model.addAttribute(TEXT, text);
+        return makeApp(GENERIC, TEXT);
     }
 
     // progress
@@ -85,9 +84,9 @@ public class Template {
 
     public String makeSeriesList(List<SeriesDTO> series) {
         setSite(APP);
-        setFragmentFile("series-crud");
-        setFragment("list");
-        addAttribute("series", series);
+        setFragmentFile(SERIES_CRUD);
+        setFragment(LIST);
+        addAttribute(SERIES, series);
         return INDEX;
     }
 
@@ -97,9 +96,9 @@ public class Template {
 
     public String makeSeriesAdd(boolean nameAlreadyExists) {
         setSite(APP);
-        setFragmentFile("series-crud");
+        setFragmentFile(SERIES_CRUD);
         setFragment(ADD_EDIT);
-        setMethod("add");
+        setMethod(ADD);
         if (nameAlreadyExists) {
             addAttribute("namealreadyexists", nameAlreadyExists);
         }
@@ -112,9 +111,9 @@ public class Template {
 
     public String makeSeriesEdit(SeriesDTO series, boolean nameAlreadyExists) {
         setSite(APP);
-        setFragmentFile("series-crud");
+        setFragmentFile(SERIES_CRUD);
         setFragment(ADD_EDIT);
-        setMethod("edit");
+        setMethod(EDIT);
         addAttribute("seriesDTO", series);
         if (nameAlreadyExists) {
             addAttribute("namealreadyexists", nameAlreadyExists);
@@ -124,9 +123,9 @@ public class Template {
 
     public String makeSeriesDeleteConfirm(SeriesDTO series) {
         setSite(APP);
-        setFragmentFile("series-crud");
+        setFragmentFile(SERIES_CRUD);
         setFragment("delete-confirm");
-        addAttribute("series", series);
+        addAttribute(SERIES, series);
         return INDEX;
     }
 
@@ -134,36 +133,36 @@ public class Template {
 
     public String makeCardList(List<CardDTO> cards) {
         setSite(APP);
-        setFragmentFile("card-crud");
-        setFragment("list");
+        setFragmentFile(CARD_CRUD);
+        setFragment(LIST);
         addAttribute("cards", cards);
         return INDEX;
     }
 
     public String makeCardAdd(List<Series> series) {
         setSite(APP);
-        setFragmentFile("card-crud");
+        setFragmentFile(CARD_CRUD);
         setFragment(ADD_EDIT);
-        setMethod("add");
-        addAttribute("series", series);
+        setMethod(ADD);
+        addAttribute(SERIES, series);
         addAttribute("progressvalues", Card.PROGRESS_VALUES);
         return INDEX;
     }
 
     public String makeCardEdit(CardDTO cardDTO, List<Series> series) {
         setSite(APP);
-        setFragmentFile("card-crud");
+        setFragmentFile(CARD_CRUD);
         setFragment(ADD_EDIT);
-        setMethod("edit");
+        setMethod(EDIT);
         addAttribute("cardDTO", cardDTO);
-        addAttribute("series", series);
+        addAttribute(SERIES, series);
         addAttribute("progressvalues", Card.PROGRESS_VALUES);
         return INDEX;
     }
 
     public String makeCardDeleteConfirm(CardDTO card) {
         setSite(APP);
-        setFragmentFile("card-crud");
+        setFragmentFile(CARD_CRUD);
         setFragment("delete-confirm");
         addAttribute("card", card);
         return INDEX;

@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import de.gmasil.pokedexer.controller.advisor.Template;
 import de.gmasil.pokedexer.dto.SeriesDTO;
+import de.gmasil.pokedexer.exception.ResourceNotFoundException;
 import de.gmasil.pokedexer.jpa.Series;
 import de.gmasil.pokedexer.jpa.SeriesRepository;
 import de.gmasil.pokedexer.services.EntityMapper;
@@ -74,8 +75,7 @@ public class SeriesController {
 
     @GetMapping("/edit/{id}")
     public String showUpdateForm(Template template, @PathVariable("id") long id) {
-        Series series = seriesRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid series id:" + id));
+        Series series = findSeriesById(id);
         return template.makeSeriesEdit(entityMapper.mapSeries(series));
     }
 
@@ -85,8 +85,7 @@ public class SeriesController {
         if (bindingResult.hasErrors()) {
             return template.makeSeriesEdit(seriesDTO);
         }
-        Series series = seriesRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid series id:" + id));
+        Series series = findSeriesById(id);
         entityMapper.patchSeries(seriesDTO, series);
         try {
             seriesRepository.save(series);
@@ -98,16 +97,18 @@ public class SeriesController {
 
     @GetMapping("/delete/{id}")
     public String deleteSeriesConfirm(Template template, @PathVariable("id") long id, Model model) {
-        Series series = seriesRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid series id:" + id));
+        Series series = findSeriesById(id);
         return template.makeSeriesDeleteConfirm(entityMapper.mapSeries(series));
     }
 
     @PostMapping("/delete/{id}")
     public String deleteSeries(Template template, @PathVariable("id") long id, Model model) {
-        Series series = seriesRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid series id:" + id));
+        Series series = findSeriesById(id);
         seriesRepository.delete(series);
         return "redirect:/series";
+    }
+
+    private Series findSeriesById(long id) {
+        return seriesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Series", "id", id));
     }
 }

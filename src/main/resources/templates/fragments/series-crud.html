@@ -20,7 +20,7 @@
 
 -->
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
 <title>Login Fragment</title>
 </head>
@@ -32,10 +32,11 @@
 	<a href="/series/add">Add Series</a>
 	<h2>Series</h2>
 	<table class="table table-bordered table-hover table-sm">
+		<caption th:text="${'Total series: ' + series.size()}">Total series</caption>
 		<thead class="thead-light">
 			<tr>
-				<th>Name</th>
-				<th>Action</th>
+				<th scope="col">Name</th>
+				<th scope="col">Action</th>
 			</tr>
 		</thead>
 		<tbody>

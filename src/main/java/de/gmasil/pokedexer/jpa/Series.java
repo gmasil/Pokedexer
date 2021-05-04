@@ -19,6 +19,7 @@
  */
 package de.gmasil.pokedexer.jpa;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
-public class Series {
+public class Series implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -43,6 +43,7 @@ import de.gmasil.pokedexer.services.EntityMapper;
 @RestController
 @RequestMapping("/api/series")
 public class SeriesRestController {
+
     @Autowired
     private SeriesRepository seriesRepository;
 
@@ -62,26 +63,27 @@ public class SeriesRestController {
     }
 
     @GetMapping("/{id}")
-    public SeriesDTO getById(@PathVariable(value = "id") Long seriesId) {
-        Series series = seriesRepository.findById(seriesId)
-                .orElseThrow(() -> new ResourceNotFoundException("Series", "id", seriesId));
+    public SeriesDTO getById(@PathVariable(value = "id") Long id) {
+        Series series = findSeriesById(id);
         return entityMapper.mapSeries(series);
     }
 
     @PutMapping("/{id}")
-    public SeriesDTO update(@PathVariable(value = "id") Long seriesId, @Valid @RequestBody SeriesDTO seriesDTO) {
-        Series series = seriesRepository.findById(seriesId)
-                .orElseThrow(() -> new ResourceNotFoundException("Series", "id", seriesId));
+    public SeriesDTO update(@PathVariable(value = "id") Long id, @Valid @RequestBody SeriesDTO seriesDTO) {
+        Series series = findSeriesById(id);
         entityMapper.patchSeries(seriesDTO, series);
         series = seriesRepository.save(series);
         return entityMapper.mapSeries(series);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable(value = "id") Long seriesId) {
-        Series series = seriesRepository.findById(seriesId)
-                .orElseThrow(() -> new ResourceNotFoundException("Series", "id", seriesId));
+    public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {
+        Series series = findSeriesById(id);
         seriesRepository.delete(series);
         return ResponseEntity.ok().build();
+    }
+
+    private Series findSeriesById(long id) {
+        return seriesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Series", "id", id));
     }
 }

@@ -63,26 +63,27 @@ public class CardRestController {
     }
 
     @GetMapping("/{id}")
-    public CardDTO getById(@PathVariable(value = "id") Long cardId) {
-        Card card = cardRepository.findById(cardId)
-                .orElseThrow(() -> new ResourceNotFoundException("Card", "id", cardId));
+    public CardDTO getById(@PathVariable(value = "id") Long id) {
+        Card card = findCardById(id);
         return entityMapper.mapCard(card);
     }
 
     @PutMapping("/{id}")
-    public CardDTO update(@PathVariable(value = "id") Long cardId, @Valid @RequestBody CardDTO cardDTO) {
-        Card card = cardRepository.findById(cardId)
-                .orElseThrow(() -> new ResourceNotFoundException("Card", "id", cardId));
+    public CardDTO update(@PathVariable(value = "id") Long id, @Valid @RequestBody CardDTO cardDTO) {
+        Card card = findCardById(id);
         entityMapper.patchCard(cardDTO, card);
         card = cardRepository.save(card);
         return entityMapper.mapCard(card);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable(value = "id") Long cardId) {
-        Card note = cardRepository.findById(cardId)
-                .orElseThrow(() -> new ResourceNotFoundException("Card", "id", cardId));
-        cardRepository.delete(note);
+    public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {
+        Card card = findCardById(id);
+        cardRepository.delete(card);
         return ResponseEntity.ok().build();
+    }
+
+    private Card findCardById(long id) {
+        return cardRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Card", "id", id));
     }
 }

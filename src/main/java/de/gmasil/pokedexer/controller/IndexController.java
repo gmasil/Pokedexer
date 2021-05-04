@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import de.gmasil.pokedexer.controller.advisor.Template;
 import de.gmasil.pokedexer.dto.CardDTO;
+import de.gmasil.pokedexer.exception.ResourceNotFoundException;
 import de.gmasil.pokedexer.jpa.Card;
 import de.gmasil.pokedexer.jpa.CardRepository;
 import de.gmasil.pokedexer.jpa.SeriesRepository;
@@ -77,9 +78,7 @@ public class IndexController {
 
     @GetMapping("/edit/{id}")
     public String showUpdateForm(Template template, @PathVariable("id") long id) {
-        // TODO: use ResourceNotFoundException
-        Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid card id:" + id));
+        Card card = findCardById(id);
         return template.makeCardEdit(entityMapper.mapCard(card), seriesRepository.findAll());
     }
 
@@ -90,8 +89,7 @@ public class IndexController {
             handleCardBindingErrors(bindingResult);
             return template.makeCardEdit(cardDTO, seriesRepository.findAll());
         }
-        Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid card id:" + id));
+        Card card = findCardById(id);
         entityMapper.patchCard(cardDTO, card);
         cardRepository.save(card);
         return "redirect:/";
@@ -99,15 +97,13 @@ public class IndexController {
 
     @GetMapping("/delete/{id}")
     public String deleteCardConfirm(Template template, @PathVariable("id") long id, Model model) {
-        Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid card id:" + id));
+        Card card = findCardById(id);
         return template.makeCardDeleteConfirm(entityMapper.mapCard(card));
     }
 
     @PostMapping("/delete/{id}")
     public String deleteCard(Template template, @PathVariable("id") long id, Model model) {
-        Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid card id:" + id));
+        Card card = findCardById(id);
         cardRepository.delete(card);
         return "redirect:/";
     }
@@ -118,5 +114,9 @@ public class IndexController {
         validationService.handleException(bindingResult.getFieldError("population"));
         validationService.handleException(bindingResult.getFieldError("purchasePrice"), "purchase price");
         validationService.handleException(bindingResult.getFieldError("cardNumber"), "card number");
+    }
+
+    private Card findCardById(long id) {
+        return cardRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Card", "id", id));
     }
 }

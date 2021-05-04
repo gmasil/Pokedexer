@@ -47,7 +47,8 @@ public class ValidationService {
     public boolean handleException(FieldError fieldError, String fieldName) {
         if (fieldError != null && fieldError.isBindingFailure()) {
             String message;
-            if (fieldError.getRejectedValue().toString().isEmpty()) {
+            Object rejectedValue = fieldError.getRejectedValue();
+            if (rejectedValue != null && rejectedValue.toString().isEmpty()) {
                 message = String.format("The %s may not be empty", fieldName);
             } else {
                 message = String.format("The %s is invalid", fieldName);
