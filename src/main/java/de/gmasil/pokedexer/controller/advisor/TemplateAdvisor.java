@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
 public class TemplateAdvisor {
+
     @ModelAttribute
     public Template getTemplate(Model model) {
         return new Template(model);

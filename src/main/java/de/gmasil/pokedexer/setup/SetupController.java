@@ -37,6 +37,7 @@ import de.gmasil.pokedexer.services.UserService;
 
 @Controller
 public class SetupController {
+
     @Autowired
     private UserService userService;
 

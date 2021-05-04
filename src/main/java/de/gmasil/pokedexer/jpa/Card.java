@@ -49,6 +49,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
 public class Card implements Serializable {
+
     private static final List<String> PROGRESS_VALUES = Collections
             .unmodifiableList(Arrays.asList("none", "interested", "bought", "ungraded", "in grading", "graded"));
 

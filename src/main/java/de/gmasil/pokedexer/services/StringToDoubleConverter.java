@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StringToDoubleConverter implements Converter<String, Double> {
+
     @Override
     public Double convert(String source) {
         return Double.parseDouble(source.replace(',', '.'));

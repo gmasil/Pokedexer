@@ -32,6 +32,7 @@ import de.gmasil.pokedexer.controller.advisor.Template;
 
 @Controller
 public class CustomErrorController implements ErrorController {
+
     private static final String PAGE_NOT_FOUND_MESSAGE = "Page not found";
     private static final String INTERNAL_SERVER_ERROR_MESSAGE = "Internal server error";
 

@@ -32,6 +32,7 @@ import de.gmasil.pokedexer.services.UserService;
 
 @Service
 public class InitialSetupInterceptor implements HandlerInterceptor {
+
     @Autowired
     private UserService userService;
 

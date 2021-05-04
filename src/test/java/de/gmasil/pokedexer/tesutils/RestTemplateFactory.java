@@ -30,6 +30,7 @@ import org.springframework.web.client.RestTemplate;
 @Lazy
 @Component
 public class RestTemplateFactory {
+
     @LocalServerPort
     private int port;
 

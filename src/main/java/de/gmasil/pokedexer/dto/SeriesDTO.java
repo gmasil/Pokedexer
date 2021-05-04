@@ -24,6 +24,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 
 public class SeriesDTO implements Serializable {
+
     private Long id;
 
     @NotBlank(message = "The name must not be empty")

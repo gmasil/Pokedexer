@@ -37,6 +37,7 @@ import de.gmasil.pokedexer.services.UserService;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     private static final String LOGIN = "/login";
 
     @Autowired

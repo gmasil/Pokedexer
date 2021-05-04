@@ -43,6 +43,7 @@ import de.gmasil.pokedexer.services.EntityMapper;
 @Controller
 @RequestMapping("/series")
 public class SeriesController {
+
     @Autowired
     private SeriesRepository seriesRepository;
 

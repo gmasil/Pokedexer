@@ -37,6 +37,7 @@ import de.gmasil.pokedexer.services.UserService;
 
 @Component
 public class InitialSetupRunner {
+
     @Autowired
     private UserRepository userRepository;
 

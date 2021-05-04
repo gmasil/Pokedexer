@@ -31,6 +31,7 @@ import org.thymeleaf.expression.IExpressionObjectFactory;
 
 @Component
 public class ThymeleafDialect extends AbstractDialect implements IExpressionObjectDialect {
+
     @Autowired
     private ThymeleafUtils utils;
 

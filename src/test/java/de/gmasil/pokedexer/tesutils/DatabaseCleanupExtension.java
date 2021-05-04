@@ -27,6 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import de.gmasil.pokedexer.setup.InitialSetupRunner;
 
 public class DatabaseCleanupExtension implements BeforeEachCallback {
+
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
         SpringExtension.getApplicationContext(context).getBeansOfType(JpaRepository.class).values()

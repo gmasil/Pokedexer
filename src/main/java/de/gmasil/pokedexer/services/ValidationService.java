@@ -26,6 +26,7 @@ import org.springframework.validation.FieldError;
 
 @Service
 public class ValidationService {
+
     public boolean setErrorMessage(FieldError fieldError, String message) {
         try {
             Field field = FieldError.class.getSuperclass().getSuperclass().getDeclaredField("defaultMessage");

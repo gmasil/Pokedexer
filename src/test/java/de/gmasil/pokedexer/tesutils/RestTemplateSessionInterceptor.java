@@ -28,6 +28,7 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
 public class RestTemplateSessionInterceptor implements ClientHttpRequestInterceptor {
+
     private String cookies;
 
     @Override

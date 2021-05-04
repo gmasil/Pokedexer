@@ -30,6 +30,7 @@ import de.gmasil.pokedexer.jpa.Card;
 import de.gmasil.pokedexer.jpa.Series;
 
 public class Template {
+
     public static final String INDEX = "index";
     public static final String ERROR = "error";
     public static final String LOGIN = "login";

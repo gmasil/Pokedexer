@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ThymeleafUtils {
+
     @Value("${format.date:yyyy-MM-dd}")
     private String dateFormat;
 

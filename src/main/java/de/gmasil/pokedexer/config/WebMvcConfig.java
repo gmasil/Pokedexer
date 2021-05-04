@@ -30,6 +30,7 @@ import de.gmasil.pokedexer.setup.InitialSetupInterceptor;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+
     @Value("${setup.interceptor.enable:true}")
     private boolean enableSetupInterceptor;
 

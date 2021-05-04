@@ -33,6 +33,7 @@ import de.gmasil.pokedexer.jpa.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
+
     @Autowired
     private UserRepository userRepository;
 

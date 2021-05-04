@@ -35,6 +35,7 @@ import de.gmasil.pokedexer.jpa.User;
 
 @Service
 public class EntityMapper {
+
     private ModelMapper mapper = new ModelMapper();
 
     public EntityMapper() {

@@ -26,6 +26,7 @@ import de.gmasil.pokedexer.controller.advisor.Template;
 
 @Controller
 public class LoginController {
+
     @GetMapping("/login")
     public String login(Template template) {
         return template.makeLogin();

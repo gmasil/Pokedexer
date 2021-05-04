@@ -33,6 +33,7 @@ import de.gmasil.pokedexer.jpa.Card;
 import de.gmasil.pokedexer.jpa.Series;
 
 public class CardDTO implements Serializable {
+
     private Long id;
 
     @NotNull
