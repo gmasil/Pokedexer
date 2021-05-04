@@ -67,7 +67,7 @@
 				<td th:text="${card.getCardNumber()}"></td>
 				<td th:text="${card.getStatus()}"></td>
 				<td>
-					<img th:src="${'/api/progress/' + card.getProgress()}" th:title="${#utils.formatProgress(card.getProgress())}" src="" alt=""></img>
+					<img th:src="${'/api/progress/' + card.getProgress()}" th:title="${card.getProgressValue()}" src="" alt=""></img>
 				</td>
 				<td>
 					<a th:href="@{/edit/{id}(id=${card.getId()})}">

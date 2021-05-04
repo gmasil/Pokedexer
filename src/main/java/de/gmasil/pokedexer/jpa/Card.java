@@ -21,7 +21,10 @@ package de.gmasil.pokedexer.jpa;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,9 +49,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
 public class Card implements Serializable {
-    // TODO: add enum to DB
-    public static final String[] PROGRESS_VALUES = new String[] { "none", "interested", "bought", "ungraded",
-            "in grading", "graded" };
+    private static final List<String> PROGRESS_VALUES = Collections
+            .unmodifiableList(Arrays.asList("none", "interested", "bought", "ungraded", "in grading", "graded"));
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -200,11 +202,23 @@ public class Card implements Serializable {
         this.progress = progress;
     }
 
+    public String getProgressValue() {
+        return getProgressValue(progress);
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
 
     public Date getUpdatedAt() {
         return updatedAt;
+    }
+
+    public static List<String> getProgressValues() {
+        return PROGRESS_VALUES;
+    }
+
+    public static String getProgressValue(int value) {
+        return PROGRESS_VALUES.get(value);
     }
 }

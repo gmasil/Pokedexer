@@ -145,7 +145,7 @@ public class Template {
         setFragment(ADD_EDIT);
         setMethod(ADD);
         addAttribute(SERIES, series);
-        addAttribute("progressvalues", Card.PROGRESS_VALUES);
+        addAttribute("progressvalues", Card.getProgressValues());
         return INDEX;
     }
 
@@ -156,7 +156,7 @@ public class Template {
         setMethod(EDIT);
         addAttribute("cardDTO", cardDTO);
         addAttribute(SERIES, series);
-        addAttribute("progressvalues", Card.PROGRESS_VALUES);
+        addAttribute("progressvalues", Card.getProgressValues());
         return INDEX;
     }
 

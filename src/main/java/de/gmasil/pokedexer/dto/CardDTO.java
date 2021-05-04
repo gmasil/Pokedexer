@@ -29,6 +29,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import de.gmasil.pokedexer.jpa.Card;
 import de.gmasil.pokedexer.jpa.Series;
 
 public class CardDTO implements Serializable {
@@ -167,5 +168,9 @@ public class CardDTO implements Serializable {
 
     public void setProgress(int progress) {
         this.progress = progress;
+    }
+
+    public String getProgressValue() {
+        return Card.getProgressValue(progress);
     }
 }

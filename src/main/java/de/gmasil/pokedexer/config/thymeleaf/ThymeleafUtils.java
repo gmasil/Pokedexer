@@ -28,8 +28,6 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import de.gmasil.pokedexer.jpa.Card;
-
 @Service
 public class ThymeleafUtils {
     @Value("${format.date:yyyy-MM-dd}")
@@ -57,9 +55,5 @@ public class ThymeleafUtils {
             s = s.replace('.', ',');
         }
         return s + currencySymbol;
-    }
-
-    public String formatProgress(int value) {
-        return Card.PROGRESS_VALUES[value];
     }
 }
