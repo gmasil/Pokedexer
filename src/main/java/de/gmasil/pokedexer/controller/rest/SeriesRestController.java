@@ -34,9 +34,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.gmasil.pokedexer.dto.SeriesDTO;
 import de.gmasil.pokedexer.exception.ResourceNotFoundException;
 import de.gmasil.pokedexer.jpa.Series;
 import de.gmasil.pokedexer.jpa.SeriesRepository;
+import de.gmasil.pokedexer.services.EntityMapper;
 
 @RestController
 @RequestMapping("/api/series")
@@ -44,37 +46,42 @@ public class SeriesRestController {
     @Autowired
     private SeriesRepository seriesRepository;
 
+    @Autowired
+    private EntityMapper entityMapper;
+
     @GetMapping("")
-    public List<Series> getAll() {
-        return seriesRepository.findAll();
+    public List<SeriesDTO> getAll() {
+        return entityMapper.mapSeries(seriesRepository.findAll());
     }
 
     @PostMapping("")
-    public Series create(@Valid @RequestBody Series series) {
-        return seriesRepository.save(series);
+    public SeriesDTO create(@Valid @RequestBody SeriesDTO seriesDTO) {
+        Series series = entityMapper.mapSeriesDTO(seriesDTO);
+        series = seriesRepository.save(series);
+        return entityMapper.mapSeries(series);
     }
 
     @GetMapping("/{id}")
-    public Series getById(@PathVariable(value = "id") Long seriesId) {
-        return seriesRepository.findById(seriesId)
-                .orElseThrow(() -> new ResourceNotFoundException("Card", "id", seriesId));
+    public SeriesDTO getById(@PathVariable(value = "id") Long seriesId) {
+        Series series = seriesRepository.findById(seriesId)
+                .orElseThrow(() -> new ResourceNotFoundException("Series", "id", seriesId));
+        return entityMapper.mapSeries(series);
     }
 
     @PutMapping("/{id}")
-    public Series update(@PathVariable(value = "id") Long cardId, @Valid @RequestBody Series seriesDetails) {
-        Series card = seriesRepository.findById(cardId)
-                .orElseThrow(() -> new ResourceNotFoundException("Set", "id", cardId));
-        if (seriesDetails.getName() != null) {
-            card.setName(seriesDetails.getName());
-        }
-        return seriesRepository.save(card);
+    public SeriesDTO update(@PathVariable(value = "id") Long seriesId, @Valid @RequestBody SeriesDTO seriesDTO) {
+        Series series = seriesRepository.findById(seriesId)
+                .orElseThrow(() -> new ResourceNotFoundException("Series", "id", seriesId));
+        entityMapper.patchSeries(seriesDTO, series);
+        series = seriesRepository.save(series);
+        return entityMapper.mapSeries(series);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long seriesId) {
-        Series note = seriesRepository.findById(seriesId)
-                .orElseThrow(() -> new ResourceNotFoundException("Set", "id", seriesId));
-        seriesRepository.delete(note);
+        Series series = seriesRepository.findById(seriesId)
+                .orElseThrow(() -> new ResourceNotFoundException("Series", "id", seriesId));
+        seriesRepository.delete(series);
         return ResponseEntity.ok().build();
     }
 }

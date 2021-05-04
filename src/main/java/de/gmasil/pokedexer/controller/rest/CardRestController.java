@@ -34,9 +34,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.gmasil.pokedexer.dto.CardDTO;
 import de.gmasil.pokedexer.exception.ResourceNotFoundException;
 import de.gmasil.pokedexer.jpa.Card;
 import de.gmasil.pokedexer.jpa.CardRepository;
+import de.gmasil.pokedexer.services.EntityMapper;
 
 @RestController
 @RequestMapping("/api/card")
@@ -44,60 +46,36 @@ public class CardRestController {
     @Autowired
     private CardRepository cardRepository;
 
+    @Autowired
+    private EntityMapper entityMapper;
+
     @GetMapping("")
-    public List<Card> getAll() {
-        return cardRepository.findAll();
+    public List<CardDTO> getAll() {
+        List<Card> cards = cardRepository.findAll();
+        return entityMapper.mapCard(cards);
     }
 
     @PostMapping("")
-    public Card create(@Valid @RequestBody Card card) {
-        return cardRepository.save(card);
+    public CardDTO create(@Valid @RequestBody CardDTO cardDTO) {
+        Card card = entityMapper.mapCardDTO(cardDTO);
+        card = cardRepository.save(card);
+        return entityMapper.mapCard(card);
     }
 
     @GetMapping("/{id}")
-    public Card getById(@PathVariable(value = "id") Long cardId) {
-        return cardRepository.findById(cardId).orElseThrow(() -> new ResourceNotFoundException("Card", "id", cardId));
+    public CardDTO getById(@PathVariable(value = "id") Long cardId) {
+        Card card = cardRepository.findById(cardId)
+                .orElseThrow(() -> new ResourceNotFoundException("Card", "id", cardId));
+        return entityMapper.mapCard(card);
     }
 
     @PutMapping("/{id}")
-    public Card update(@PathVariable(value = "id") Long cardId, @Valid @RequestBody Card cardDetails) {
+    public CardDTO update(@PathVariable(value = "id") Long cardId, @Valid @RequestBody CardDTO cardDTO) {
         Card card = cardRepository.findById(cardId)
                 .orElseThrow(() -> new ResourceNotFoundException("Card", "id", cardId));
-        if (cardDetails.getName() != null) {
-            card.setName(cardDetails.getName());
-        }
-        if (cardDetails.getCertNumber() != null) {
-            card.setCertNumber(cardDetails.getCertNumber());
-        }
-        if (cardDetails.getGrade() != null) {
-            card.setGrade(cardDetails.getGrade());
-        }
-        if (cardDetails.getPopulation() != null) {
-            card.setPopulation(cardDetails.getPopulation());
-        }
-        if (cardDetails.getPurchaseDate() != null) {
-            card.setPurchaseDate(cardDetails.getPurchaseDate());
-        }
-        if (cardDetails.getPurchasePrice() != null) {
-            card.setPurchasePrice(cardDetails.getPurchasePrice());
-        }
-        if (cardDetails.getGradingSendOffDate() != null) {
-            card.setGradingSendOffDate(cardDetails.getGradingSendOffDate());
-        }
-        if (cardDetails.getGradingReceivedDate() != null) {
-            card.setGradingReceivedDate(cardDetails.getGradingReceivedDate());
-        }
-        if (cardDetails.getSeries() != null) {
-            card.setSeries(cardDetails.getSeries());
-        }
-        if (cardDetails.getCardNumber() != null) {
-            card.setCardNumber(cardDetails.getCardNumber());
-        }
-        if (cardDetails.getStatus() != null) {
-            card.setStatus(cardDetails.getStatus());
-        }
-        card.setProgress(cardDetails.getProgress());
-        return cardRepository.save(card);
+        entityMapper.patchCard(cardDTO, card);
+        card = cardRepository.save(card);
+        return entityMapper.mapCard(card);
     }
 
     @DeleteMapping("/{id}")

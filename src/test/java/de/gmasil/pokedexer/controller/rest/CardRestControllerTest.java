@@ -21,6 +21,7 @@ package de.gmasil.pokedexer.controller.rest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -123,7 +124,6 @@ class CardRestControllerTest {
         Long id = card.getId();
         assertThat(id, is(notNullValue()));
         // update card
-        card = new Card();
         card.setName("New Name");
         card.setStatus("PSA");
         template.put(url("/api/card/" + id), card);
@@ -151,7 +151,6 @@ class CardRestControllerTest {
         Long id = card.getId();
         assertThat(id, is(notNullValue()));
         // update card
-        card = new Card();
         card.setName("New Name");
         card.setStatus("PSA");
         card.setSeries(series);
@@ -162,6 +161,72 @@ class CardRestControllerTest {
         assertThat(card.getStatus(), is(equalTo("PSA")));
         assertThat(card.getCardNumber(), is(equalTo(123)));
         assertThat(card.getSeries().getName(), is(equalTo("Gym")));
+    }
+
+    @Test
+    void testUpdateSetNull() {
+        RestTemplate template = factory.getAuthenticatedRestTemplate();
+        // create card
+        Card card = new Card();
+        card.setName("Misty's Tears");
+        card.setStatus("home");
+        card.setCardNumber(123);
+        card = template.postForObject(url("/api/card"), card, Card.class);
+        Long id = card.getId();
+        assertThat(id, is(notNullValue()));
+        // update card
+        card.setName("New Name");
+        card.setStatus(null);
+        template.put(url("/api/card/" + id), card);
+        card = template.getForObject(url("/api/card/" + id), Card.class);
+        assertThat(card.getId(), is(equalTo(id)));
+        assertThat(card.getName(), is(equalTo("New Name")));
+        assertThat(card.getStatus(), is(nullValue()));
+        assertThat(card.getCardNumber(), is(equalTo(123)));
+        assertThat(card.getSeries(), is(nullValue()));
+    }
+
+    @Test
+    void testUpdateChangeId() {
+        long newId = 29843675L;
+        RestTemplate template = factory.getAuthenticatedRestTemplate();
+        // create card
+        Card card = new Card();
+        card.setName("Misty's Tears");
+        card.setCardNumber(123);
+        card = template.postForObject(url("/api/card"), card, Card.class);
+        Long id = card.getId();
+        assertThat(id, is(notNullValue()));
+        // update card
+        card.setId(newId);
+        card.setName("New Name");
+        template.put(url("/api/card/" + id), card);
+        // the card id is ignored in body
+        card = template.getForObject(url("/api/card/" + id), Card.class);
+        assertThat(card.getId(), is(equalTo(id)));
+        assertThat(card.getId(), is(not(equalTo(newId))));
+        assertThat(card.getName(), is(equalTo("New Name")));
+        assertThat(card.getCardNumber(), is(equalTo(123)));
+    }
+
+    @Test
+    void testUpdateRemoveId() {
+        RestTemplate template = factory.getAuthenticatedRestTemplate();
+        // create card
+        Card card = new Card();
+        card.setName("Misty's Tears");
+        card.setCardNumber(123);
+        card = template.postForObject(url("/api/card"), card, Card.class);
+        Long id = card.getId();
+        assertThat(id, is(notNullValue()));
+        // update card
+        card.setId(null);
+        card.setName("New Name");
+        template.put(url("/api/card/" + id), card);
+        card = template.getForObject(url("/api/card/" + id), Card.class);
+        assertThat(card.getId(), is(equalTo(id)));
+        assertThat(card.getName(), is(equalTo("New Name")));
+        assertThat(card.getCardNumber(), is(equalTo(123)));
     }
 
     @Test

@@ -37,7 +37,7 @@ import de.gmasil.pokedexer.controller.advisor.Template;
 import de.gmasil.pokedexer.dto.SeriesDTO;
 import de.gmasil.pokedexer.jpa.Series;
 import de.gmasil.pokedexer.jpa.SeriesRepository;
-import de.gmasil.pokedexer.services.ModelConverter;
+import de.gmasil.pokedexer.services.EntityMapper;
 
 @Controller
 @RequestMapping("/series")
@@ -46,12 +46,12 @@ public class SeriesController {
     private SeriesRepository seriesRepository;
 
     @Autowired
-    private ModelConverter converter;
+    private EntityMapper entityMapper;
 
     @GetMapping("")
     public String index(Template template) {
         List<Series> series = seriesRepository.findAll();
-        return template.makeSeriesList(converter.mapSeries(series));
+        return template.makeSeriesList(entityMapper.mapSeries(series));
     }
 
     @GetMapping("/add")
@@ -65,7 +65,7 @@ public class SeriesController {
             return template.makeSeriesAdd();
         }
         try {
-            seriesRepository.save(converter.mapSeriesDTO(seriesDTO));
+            seriesRepository.save(entityMapper.mapSeriesDTO(seriesDTO));
         } catch (DataIntegrityViolationException e) {
             return template.makeSeriesAdd(true);
         }
@@ -76,7 +76,7 @@ public class SeriesController {
     public String showUpdateForm(Template template, @PathVariable("id") long id) {
         Series series = seriesRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid series id:" + id));
-        return template.makeSeriesEdit(converter.mapSeries(series));
+        return template.makeSeriesEdit(entityMapper.mapSeries(series));
     }
 
     @PostMapping("/edit/{id}")
@@ -85,8 +85,11 @@ public class SeriesController {
         if (bindingResult.hasErrors()) {
             return template.makeSeriesEdit(seriesDTO);
         }
+        Series series = seriesRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid series id:" + id));
+        entityMapper.patchSeries(seriesDTO, series);
         try {
-            seriesRepository.save(converter.mapSeriesDTO(seriesDTO));
+            seriesRepository.save(series);
         } catch (DataIntegrityViolationException e) {
             return template.makeSeriesEdit(seriesDTO, true);
         }
@@ -97,7 +100,7 @@ public class SeriesController {
     public String deleteSeriesConfirm(Template template, @PathVariable("id") long id, Model model) {
         Series series = seriesRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid series id:" + id));
-        return template.makeSeriesDeleteConfirm(converter.mapSeries(series));
+        return template.makeSeriesDeleteConfirm(entityMapper.mapSeries(series));
     }
 
     @PostMapping("/delete/{id}")
