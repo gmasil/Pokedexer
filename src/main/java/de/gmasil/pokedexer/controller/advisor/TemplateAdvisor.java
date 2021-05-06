@@ -19,6 +19,7 @@
  */
 package de.gmasil.pokedexer.controller.advisor;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,8 +27,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @ControllerAdvice
 public class TemplateAdvisor {
 
+    @Value("${spring.application.name}")
+    private String appName;
+
     @ModelAttribute
     public Template getTemplate(Model model) {
+        model.addAttribute("appname", appName);
         return new Template(model);
     }
 }

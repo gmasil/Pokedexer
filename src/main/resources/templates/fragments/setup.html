@@ -52,7 +52,7 @@
 <div th:remove="tag" th:fragment="already-setup">
 	<h2 class="text-center">Everything is set up!</h2>
 	<div class="d-flex justify-content-center">
-		<a class="btn btn-primary" href="/" role="button">Start using the Collector</a>
+		<a class="btn btn-primary" href="/" role="button" th:text="${'Start using ' + appname}">Start using the application</a>
 	</div>
 </div>
 
