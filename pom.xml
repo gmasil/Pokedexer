@@ -263,7 +263,7 @@
                 <version>3.7.2</version>
                 <executions>
                     <execution>
-                        <phase>prepare-package</phase>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>update-stylesheets</goal>
                         </goals>
@@ -275,6 +275,21 @@
                     <sassOptions>
                         <style>:compressed</style>
                     </sassOptions>
+                </configuration>
+            </plugin>
+            <!-- clean generated css files -->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>src/main/resources/static/public/css</directory>
+                            <includes>
+                                <include>*.css</include>
+                            </includes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
                 </configuration>
             </plugin>
             <!-- license -->
