@@ -51,16 +51,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- versions -->
         <modelmapper.version>2.4.2</modelmapper.version>
-        <thymeleaf-minifier.version>1.2-SNAPSHOT</thymeleaf-minifier.version>
+        <thymeleaf-minifier.version>1.2</thymeleaf-minifier.version>
         <slimselectjs.version>1.20.0</slimselectjs.version>
         <bootstrap.version>4.6.0</bootstrap.version>
         <license-plugin.version>3.0</license-plugin.version>
         <jacoco-plugin.version>0.8.4</jacoco-plugin.version>
+        <testapi.version>1.1</testapi.version>
         <!-- skip test config -->
         <skipITs>true</skipITs>
         <skip.surefire.tests>${skipTests}</skip.surefire.tests>
         <!-- sonarqube -->
-        <sonar.coverage.exclusions>**/Application.java,**/*DTO.java</sonar.coverage.exclusions>
+        <sonar.coverage.exclusions>**/Application.java,**/EntityMapper.java</sonar.coverage.exclusions>
         <sonar.cpd.exclusions>**/*DTO.java</sonar.cpd.exclusions>
     </properties>
 
@@ -125,6 +126,11 @@
             <artifactId>bootstrap</artifactId>
             <version>${bootstrap.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <!-- database -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -148,60 +154,9 @@
         </dependency>
         <!-- test -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-runner</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
+            <groupId>de.gmasil</groupId>
+            <artifactId>testapi</artifactId>
+            <version>${testapi.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

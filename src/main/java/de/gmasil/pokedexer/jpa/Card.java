@@ -44,6 +44,19 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Builder.Default;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table
 @EntityListeners(AuditingEntityListener.class)
@@ -54,6 +67,7 @@ public class Card implements Serializable {
             .unmodifiableList(Arrays.asList("none", "interested", "bought", "ungraded", "in grading", "graded"));
 
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -83,136 +97,23 @@ public class Card implements Serializable {
 
     private String status;
 
+    @Default
     private int progress = 0;
 
     @LastModifiedDate
+    @Setter(AccessLevel.NONE)
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = true)
     private Date createdAt;
 
     @LastModifiedDate
+    @Setter(AccessLevel.NONE)
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = true)
     private Date updatedAt;
 
-    public Card() {
-        // required by hibernate
-    }
-
-    public Card(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getCertNumber() {
-        return certNumber;
-    }
-
-    public void setCertNumber(Long certNumber) {
-        this.certNumber = certNumber;
-    }
-
-    public Integer getGrade() {
-        return grade;
-    }
-
-    public void setGrade(Integer grade) {
-        this.grade = grade;
-    }
-
-    public Integer getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(Integer population) {
-        this.population = population;
-    }
-
-    public LocalDate getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public void setPurchaseDate(LocalDate purchaseDate) {
-        this.purchaseDate = purchaseDate;
-    }
-
-    public Double getPurchasePrice() {
-        return purchasePrice;
-    }
-
-    public void setPurchasePrice(Double purchasePrice) {
-        this.purchasePrice = purchasePrice;
-    }
-
-    public LocalDate getGradingSendOffDate() {
-        return gradingSendOffDate;
-    }
-
-    public void setGradingSendOffDate(LocalDate gradingSendOffDate) {
-        this.gradingSendOffDate = gradingSendOffDate;
-    }
-
-    public LocalDate getGradingReceivedDate() {
-        return gradingReceivedDate;
-    }
-
-    public void setGradingReceivedDate(LocalDate gradingReceivedDate) {
-        this.gradingReceivedDate = gradingReceivedDate;
-    }
-
-    public Series getSeries() {
-        return series;
-    }
-
-    public void setSeries(Series series) {
-        this.series = series;
-    }
-
-    public Integer getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(Integer cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public int getProgress() {
-        return progress;
-    }
-
-    public void setProgress(int progress) {
-        this.progress = progress;
-    }
-
     public String getProgressValue() {
         return getProgressValue(progress);
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
     }
 
     public static List<String> getProgressValues() {

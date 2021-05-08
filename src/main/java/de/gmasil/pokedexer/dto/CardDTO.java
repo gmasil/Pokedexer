@@ -31,7 +31,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import de.gmasil.pokedexer.jpa.Card;
 import de.gmasil.pokedexer.jpa.Series;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Builder.Default;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CardDTO implements Serializable {
 
     private Long id;
@@ -65,111 +76,8 @@ public class CardDTO implements Serializable {
 
     @Min(0)
     @Max(5)
+    @Default
     private int progress = 0;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getCertNumber() {
-        return certNumber;
-    }
-
-    public void setCertNumber(Long certNumber) {
-        this.certNumber = certNumber;
-    }
-
-    public Integer getGrade() {
-        return grade;
-    }
-
-    public void setGrade(Integer grade) {
-        this.grade = grade;
-    }
-
-    public Integer getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(Integer population) {
-        this.population = population;
-    }
-
-    public LocalDate getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public void setPurchaseDate(LocalDate purchaseDate) {
-        this.purchaseDate = purchaseDate;
-    }
-
-    public Double getPurchasePrice() {
-        return purchasePrice;
-    }
-
-    public void setPurchasePrice(Double purchasePrice) {
-        this.purchasePrice = purchasePrice;
-    }
-
-    public LocalDate getGradingSendOffDate() {
-        return gradingSendOffDate;
-    }
-
-    public void setGradingSendOffDate(LocalDate gradingSendOffDate) {
-        this.gradingSendOffDate = gradingSendOffDate;
-    }
-
-    public LocalDate getGradingReceivedDate() {
-        return gradingReceivedDate;
-    }
-
-    public void setGradingReceivedDate(LocalDate gradingReceivedDate) {
-        this.gradingReceivedDate = gradingReceivedDate;
-    }
-
-    public Series getSeries() {
-        return series;
-    }
-
-    public void setSeries(Series series) {
-        this.series = series;
-    }
-
-    public Integer getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(Integer cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public int getProgress() {
-        return progress;
-    }
-
-    public void setProgress(int progress) {
-        this.progress = progress;
-    }
 
     public String getProgressValue() {
         return Card.getProgressValue(progress);

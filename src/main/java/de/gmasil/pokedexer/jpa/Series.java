@@ -41,6 +41,18 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table
 @EntityListeners(AuditingEntityListener.class)
@@ -48,6 +60,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Series implements Serializable {
 
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -59,18 +72,16 @@ public class Series implements Serializable {
     private Set<Card> cards;
 
     @LastModifiedDate
+    @Setter(AccessLevel.NONE)
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = true)
     private Date createdAt;
 
     @LastModifiedDate
+    @Setter(AccessLevel.NONE)
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, updatable = true)
     private Date updatedAt;
-
-    public Series() {
-        // required by hibernate
-    }
 
     public Series(long id) {
         this.id = id;
@@ -85,25 +96,5 @@ public class Series implements Serializable {
         for (Card card : cards) {
             card.setSeries(null);
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
     }
 }

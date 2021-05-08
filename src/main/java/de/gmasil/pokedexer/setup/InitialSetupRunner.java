@@ -56,9 +56,7 @@ public class InitialSetupRunner {
     @EventListener(ApplicationReadyEvent.class)
     public void setupInitialUser() {
         if (setupUser && userRepository.count() == 0 && username != null && password != null) {
-            User user = new User();
-            user.setName(username);
-            user.setPassword(password);
+            User user = User.builder().name(username).password(password).admin(true).build();
             userService.encodePassword(user);
             userService.save(user);
         }

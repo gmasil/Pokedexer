@@ -35,6 +35,14 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Builder.Default;
+import lombok.NoArgsConstructor;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "USERS")
 @Table(name = "USERS")
 public class User implements UserDetails, Serializable {
@@ -51,18 +59,11 @@ public class User implements UserDetails, Serializable {
     @Column(nullable = false)
     private String password;
 
+    @Default
     private boolean admin = true;
 
-    public User() {
-        super();
-    }
-
-    public User(Long id) {
-        this.id = id;
-    }
-
-    public User(String name) {
-        this.name = name;
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
