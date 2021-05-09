@@ -62,7 +62,7 @@
         <skip.surefire.tests>${skipTests}</skip.surefire.tests>
         <!-- sonarqube -->
         <sonar.coverage.exclusions>**/Application.java,**/EntityMapper.java</sonar.coverage.exclusions>
-        <sonar.cpd.exclusions>**/*DTO.java</sonar.cpd.exclusions>
+        <sonar.cpd.exclusions>**/*DTO.java,**/jpa/*.java</sonar.cpd.exclusions>
     </properties>
 
     <parent>
