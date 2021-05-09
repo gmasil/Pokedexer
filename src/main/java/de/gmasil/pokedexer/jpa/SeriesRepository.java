@@ -19,10 +19,16 @@
  */
 package de.gmasil.pokedexer.jpa;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SeriesRepository extends JpaRepository<Series, Long> {
 
+    public List<Series> findAllByUser(User user);
+
+    public Optional<Series> findByIdAndUser(Long id, User user);
 }

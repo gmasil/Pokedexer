@@ -100,6 +100,10 @@ public class Card implements Serializable {
     @Default
     private int progress = 0;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @LastModifiedDate
     @Setter(AccessLevel.NONE)
     @Temporal(TemporalType.TIMESTAMP)

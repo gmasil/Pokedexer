@@ -17,8 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.services;
+package de.gmasil.pokedexer.jpa;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import de.gmasil.pokedexer.jpa.User;
-import de.gmasil.pokedexer.jpa.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -59,5 +57,9 @@ public class UserService implements UserDetailsService {
 
     public boolean hasUsers() {
         return userRepository.count() > 0;
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

@@ -37,7 +37,7 @@ import de.gmasil.pokedexer.controller.advisor.Template;
 import de.gmasil.pokedexer.dto.SeriesDTO;
 import de.gmasil.pokedexer.exception.ResourceNotFoundException;
 import de.gmasil.pokedexer.jpa.Series;
-import de.gmasil.pokedexer.jpa.SeriesRepository;
+import de.gmasil.pokedexer.jpa.SeriesService;
 import de.gmasil.pokedexer.services.EntityMapper;
 
 @Controller
@@ -45,14 +45,14 @@ import de.gmasil.pokedexer.services.EntityMapper;
 public class SeriesController {
 
     @Autowired
-    private SeriesRepository seriesRepository;
+    private SeriesService seriesService;
 
     @Autowired
     private EntityMapper entityMapper;
 
     @GetMapping("")
     public String index(Template template) {
-        List<Series> series = seriesRepository.findAll();
+        List<Series> series = seriesService.findAll();
         return template.makeSeriesList(entityMapper.mapSeries(series));
     }
 
@@ -67,7 +67,7 @@ public class SeriesController {
             return template.makeSeriesAdd();
         }
         try {
-            seriesRepository.save(entityMapper.mapSeriesDTO(seriesDTO));
+            seriesService.save(entityMapper.mapSeriesDTO(seriesDTO));
         } catch (DataIntegrityViolationException e) {
             return template.makeSeriesAdd(true);
         }
@@ -89,7 +89,7 @@ public class SeriesController {
         Series series = findSeriesById(id);
         entityMapper.patchSeries(seriesDTO, series);
         try {
-            seriesRepository.save(series);
+            seriesService.save(series);
         } catch (DataIntegrityViolationException e) {
             return template.makeSeriesEdit(seriesDTO, true);
         }
@@ -105,11 +105,11 @@ public class SeriesController {
     @PostMapping("/delete/{id}")
     public String deleteSeries(Template template, @PathVariable("id") long id, Model model) {
         Series series = findSeriesById(id);
-        seriesRepository.delete(series);
+        seriesService.delete(series);
         return "redirect:/series";
     }
 
     private Series findSeriesById(long id) {
-        return seriesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Series", "id", id));
+        return seriesService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Series", "id", id));
     }
 }

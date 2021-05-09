@@ -32,8 +32,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import de.gmasil.pokedexer.controller.advisor.Template;
 import de.gmasil.pokedexer.dto.UserDTO;
 import de.gmasil.pokedexer.jpa.User;
+import de.gmasil.pokedexer.jpa.UserService;
 import de.gmasil.pokedexer.services.EntityMapper;
-import de.gmasil.pokedexer.services.UserService;
 
 @Controller
 public class SetupController {

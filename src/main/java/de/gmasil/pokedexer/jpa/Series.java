@@ -29,11 +29,14 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -54,7 +57,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "user_id" }) })
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
 public class Series implements Serializable {
@@ -65,11 +68,15 @@ public class Series implements Serializable {
     private Long id;
 
     @Length(min = 1)
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "series")
     private Set<Card> cards;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @LastModifiedDate
     @Setter(AccessLevel.NONE)

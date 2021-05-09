@@ -17,35 +17,39 @@
  * You should have received a copy of the GNU General Public License
  * along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
  */
-package de.gmasil.pokedexer.setup;
+package de.gmasil.pokedexer.jpa;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.HandlerInterceptor;
 
-import de.gmasil.pokedexer.jpa.UserService;
+import de.gmasil.pokedexer.services.UserProvider;
 
 @Service
-public class InitialSetupInterceptor implements HandlerInterceptor {
+public class SeriesService {
 
     @Autowired
-    private UserService userService;
+    private SeriesRepository seriesRepository;
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws IOException {
-        if (!userService.hasUsers() //
-                && !request.getRequestURI().startsWith("/setup") //
-                && !request.getRequestURI().startsWith("/error") //
-                && !request.getRequestURI().startsWith("/public/")) {//
-            response.sendRedirect("/setup");
-            return false;
-        }
-        return true;
+    @Autowired
+    private UserProvider userProvider;
+
+    public Optional<Series> findById(Long id) {
+        return seriesRepository.findByIdAndUser(id, userProvider.getCurrent());
+    }
+
+    public List<Series> findAll() {
+        return seriesRepository.findAllByUser(userProvider.getCurrent());
+    }
+
+    public Series save(Series series) {
+        series.setUser(userProvider.getCurrent());
+        return seriesRepository.save(series);
+    }
+
+    public void delete(Series series) {
+        seriesRepository.delete(series);
     }
 }

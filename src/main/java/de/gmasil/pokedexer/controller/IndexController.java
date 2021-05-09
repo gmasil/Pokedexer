@@ -35,8 +35,8 @@ import de.gmasil.pokedexer.controller.advisor.Template;
 import de.gmasil.pokedexer.dto.CardDTO;
 import de.gmasil.pokedexer.exception.ResourceNotFoundException;
 import de.gmasil.pokedexer.jpa.Card;
-import de.gmasil.pokedexer.jpa.CardRepository;
-import de.gmasil.pokedexer.jpa.SeriesRepository;
+import de.gmasil.pokedexer.jpa.CardService;
+import de.gmasil.pokedexer.jpa.SeriesService;
 import de.gmasil.pokedexer.services.EntityMapper;
 import de.gmasil.pokedexer.services.ValidationService;
 
@@ -50,36 +50,36 @@ public class IndexController {
     private ValidationService validationService;
 
     @Autowired
-    private CardRepository cardRepository;
+    private CardService cardService;
 
     @Autowired
-    private SeriesRepository seriesRepository;
+    private SeriesService seriesService;
 
     @GetMapping("/")
     public String index(Template template) {
-        List<Card> cards = cardRepository.findAll();
+        List<Card> cards = cardService.findAll();
         return template.makeCardList(entityMapper.mapCard(cards));
     }
 
     @GetMapping("/add")
     public String showForm(Template template, CardDTO cardDTO) {
-        return template.makeCardAdd(seriesRepository.findAll());
+        return template.makeCardAdd(seriesService.findAll());
     }
 
     @PostMapping("/add")
     public String addCard(Template template, @Valid CardDTO cardDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             handleCardBindingErrors(bindingResult);
-            return template.makeCardAdd(seriesRepository.findAll());
+            return template.makeCardAdd(seriesService.findAll());
         }
-        cardRepository.save(entityMapper.mapCardDTO(cardDTO));
+        cardService.save(entityMapper.mapCardDTO(cardDTO));
         return "redirect:";
     }
 
     @GetMapping("/edit/{id}")
     public String showUpdateForm(Template template, @PathVariable("id") long id) {
         Card card = findCardById(id);
-        return template.makeCardEdit(entityMapper.mapCard(card), seriesRepository.findAll());
+        return template.makeCardEdit(entityMapper.mapCard(card), seriesService.findAll());
     }
 
     @PostMapping("/edit/{id}")
@@ -87,11 +87,11 @@ public class IndexController {
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             handleCardBindingErrors(bindingResult);
-            return template.makeCardEdit(cardDTO, seriesRepository.findAll());
+            return template.makeCardEdit(cardDTO, seriesService.findAll());
         }
         Card card = findCardById(id);
         entityMapper.patchCard(cardDTO, card);
-        cardRepository.save(card);
+        cardService.save(card);
         return "redirect:/";
     }
 
@@ -104,7 +104,7 @@ public class IndexController {
     @PostMapping("/delete/{id}")
     public String deleteCard(Template template, @PathVariable("id") long id, Model model) {
         Card card = findCardById(id);
-        cardRepository.delete(card);
+        cardService.delete(card);
         return "redirect:/";
     }
 
@@ -117,6 +117,6 @@ public class IndexController {
     }
 
     private Card findCardById(long id) {
-        return cardRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Card", "id", id));
+        return cardService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Card", "id", id));
     }
 }
