@@ -82,6 +82,8 @@ public class IndexController {
         sortLookup.put("Language", "language");
         sortLookup.put("Status", "status");
         sortLookup.put("Progress", "progress");
+        sortLookup.put("Last Updated", "updatedAt");
+        sortLookup.put("Created", "createdAt");
     }
 
     @GetMapping("/")
@@ -97,29 +99,45 @@ public class IndexController {
     }
 
     @GetMapping("/add")
-    public String showForm(Template template, CardDTO cardDTO) {
+    public String showForm(Template template, CardDTO cardDTO,
+            @RequestParam(name = "sort", required = false, defaultValue = "name") String sortParam,
+            @RequestParam(name = "desc") Optional<String> descParam) {
+        template.addAttribute("sort", sortParam);
+        template.addAttribute("desc", descParam.isPresent());
         return template.makeCardAdd(seriesService.findAll(), languageRepository.findAll());
     }
 
     @PostMapping("/add")
-    public String addCard(Template template, @Valid CardDTO cardDTO, BindingResult bindingResult) {
+    public String addCard(Template template, @Valid CardDTO cardDTO, BindingResult bindingResult,
+            @RequestParam(name = "sort", required = false, defaultValue = "name") String sortParam,
+            @RequestParam(name = "desc") Optional<String> descParam) {
+        template.addAttribute("sort", sortParam);
+        template.addAttribute("desc", descParam.isPresent());
         if (bindingResult.hasErrors()) {
             handleCardBindingErrors(bindingResult);
             return template.makeCardAdd(seriesService.findAll(), languageRepository.findAll());
         }
         cardService.save(entityMapper.mapCardDTO(cardDTO));
-        return "redirect:";
+        return "redirect:?sort=" + sortParam + (descParam.isPresent() ? "&desc" : "");
     }
 
     @GetMapping("/edit/{id}")
-    public String showUpdateForm(Template template, @PathVariable("id") long id) {
+    public String showUpdateForm(Template template, @PathVariable("id") long id,
+            @RequestParam(name = "sort", required = false, defaultValue = "name") String sortParam,
+            @RequestParam(name = "desc") Optional<String> descParam) {
+        template.addAttribute("sort", sortParam);
+        template.addAttribute("desc", descParam.isPresent());
         Card card = findCardById(id);
         return template.makeCardEdit(entityMapper.mapCard(card), seriesService.findAll(), languageRepository.findAll());
     }
 
     @PostMapping("/edit/{id}")
     public String updateCard(Template template, @PathVariable("id") long id, @Valid CardDTO cardDTO,
-            BindingResult bindingResult) {
+            BindingResult bindingResult,
+            @RequestParam(name = "sort", required = false, defaultValue = "name") String sortParam,
+            @RequestParam(name = "desc") Optional<String> descParam) {
+        template.addAttribute("sort", sortParam);
+        template.addAttribute("desc", descParam.isPresent());
         if (bindingResult.hasErrors()) {
             handleCardBindingErrors(bindingResult);
             return template.makeCardEdit(cardDTO, seriesService.findAll(), languageRepository.findAll());
@@ -127,20 +145,26 @@ public class IndexController {
         Card card = findCardById(id);
         entityMapper.patchCard(cardDTO, card);
         cardService.save(card);
-        return "redirect:/";
+        return "redirect:/?sort=" + sortParam + (descParam.isPresent() ? "&desc" : "");
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteCardConfirm(Template template, @PathVariable("id") long id, Model model) {
+    public String deleteCardConfirm(Template template, @PathVariable("id") long id, Model model,
+            @RequestParam(name = "sort", required = false, defaultValue = "name") String sortParam,
+            @RequestParam(name = "desc") Optional<String> descParam) {
+        template.addAttribute("sort", sortParam);
+        template.addAttribute("desc", descParam.isPresent());
         Card card = findCardById(id);
         return template.makeCardDeleteConfirm(entityMapper.mapCard(card));
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteCard(Template template, @PathVariable("id") long id, Model model) {
+    public String deleteCard(Template template, @PathVariable("id") long id, Model model,
+            @RequestParam(name = "sort", required = false, defaultValue = "name") String sortParam,
+            @RequestParam(name = "desc") Optional<String> descParam) {
         Card card = findCardById(id);
         cardService.delete(card);
-        return "redirect:/";
+        return "redirect:/?sort=" + sortParam + (descParam.isPresent() ? "&desc" : "");
     }
 
     private void handleCardBindingErrors(BindingResult bindingResult) {

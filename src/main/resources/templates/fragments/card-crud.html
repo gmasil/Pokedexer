@@ -29,13 +29,17 @@
 <div th:remove="tag" th:fragment="list">
 	<a href="/series">Series</a>
 	<br />
-	<a href="/add">Add Card</a>
+	<a th:href="${'/add' + '?sort=' + sort + (desc ? '&desc' : '')}">Add Card</a>
 	<h2>Cards</h2>
 	<table class="table table-bordered table-hover table-striped table-sm">
 		<caption th:text="${'Total cards: ' + cards.size()}">Total cards</caption>
 		<thead class="thead-light">
-			<tr th:with="columns=${ {'Name', 'Cert', 'Grade', 'Population', 'Purchase Date', 'Purchase Price', 'Grading Sendoff', 'Grading Received', 'Series', 'Card Number', 'Language', 'Status', 'Progress'} }">
-				<th th:each="column : ${columns}" scope="col"><a class="mr-3 pr-3" th:href="${'?sort=' + column + (column.equalsIgnoreCase(sort) and !desc ? '&desc' : '')}" th:text="${column}">Colname</a> <em style="width:0;transform:translate(-2rem,5px);" th:if="${column.equalsIgnoreCase(sort)}" th:text="${desc ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}" class="material-icons icon-bigger">keyboard_arrow_down</em></th>
+			<tr
+				th:with="columns=${ {'Name', 'Cert', 'Grade', 'Population', 'Purchase Date', 'Purchase Price', 'Grading Sendoff', 'Grading Received', 'Series', 'Card Number', 'Language', 'Status', 'Progress', 'Last Updated', 'Created'} }">
+				<th th:each="column : ${columns}" scope="col">
+					<a class="mr-3 pr-3" th:href="${'?sort=' + column + (column.equalsIgnoreCase(sort) and !desc ? '&desc' : '')}" th:text="${column}">Colname</a>
+					<em style="width: 0; transform: translate(-2rem, 5px);" th:if="${column.equalsIgnoreCase(sort)}" th:text="${desc ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}" class="material-icons icon-bigger">keyboard_arrow_down</em>
+				</th>
 				<th scope="col">Action</th>
 			</tr>
 		</thead>
@@ -59,11 +63,13 @@
 				<td>
 					<img th:src="${'/api/progress/' + card.getProgress()}" th:title="${card.getProgressValue()}" src="" alt=""></img>
 				</td>
+				<td th:text="${#utils.formatDate(card.getUpdatedAt())}"></td>
+				<td th:text="${#utils.formatDate(card.getCreatedAt())}"></td>
 				<td>
-					<a th:href="@{/edit/{id}(id=${card.getId()})}">
+					<a th:href="${'/edit/' + card.getId() + '?sort=' + sort + (desc ? '&desc' : '')}">
 						<em class="material-icons icon-bigger">edit</em>
 					</a>
-					<a th:href="@{/delete/{id}(id=${card.getId()})}">
+					<a th:href="${'/delete/' + card.getId() + '?sort=' + sort + (desc ? '&desc' : '')}">
 						<em class="material-icons icon-bigger">delete</em>
 					</a>
 				</td>
@@ -74,7 +80,7 @@
 
 <div th:fragment="add-edit" class="container">
 	<h2 th:text="${(method == 'edit' ? 'Edit' : 'New') + ' Card'}">New/Edit Card</h2>
-	<form action="#" th:action="${'/' + (method == 'edit' ? 'edit/' + cardDTO.getId() : 'add')}" th:object="${cardDTO}" method="post">
+	<form action="#" th:action="${'/' + (method == 'edit' ? 'edit/' + cardDTO.getId() : 'add') + '?sort=' + sort + (desc ? '&desc' : '')}" th:object="${cardDTO}" method="post">
 		<div class="form-row">
 			<div class="col-12">
 				<div class="form-group">
@@ -193,7 +199,7 @@
 		</div>
 		<div class="form-group">
 			<button type="submit" class="btn btn-primary" th:text="${method == 'edit' ? 'Edit' : 'Add'}">Submit</button>
-			<a href="/" class="ml-3 btn btn-secondary">Cancel</a>
+			<a th:href="${'/' + '?sort=' + sort + (desc ? '&desc' : '')}" class="ml-3 btn btn-secondary">Cancel</a>
 		</div>
 	</form>
 	<script type="text/javascript">
@@ -221,10 +227,10 @@
 		<strong th:text="${'&nbsp;' + card.getName()}"></strong>
 		?
 	</p>
-	<form action="#" th:action="${'/delete/' + card.getId()}" method="post">
+	<form action="#" th:action="${'/delete/' + card.getId() + '?sort=' + sort + (desc ? '&desc' : '')}" method="post">
 		<div class="form-group">
 			<button type="submit" class="btn btn-danger">Delete</button>
-			<a href="/" class="ml-3 btn btn-secondary">Cancel</a>
+			<a th:href="${'/' + '?sort=' + sort + (desc ? '&desc' : '')}" class="ml-3 btn btn-secondary">Cancel</a>
 		</div>
 	</form>
 </div>

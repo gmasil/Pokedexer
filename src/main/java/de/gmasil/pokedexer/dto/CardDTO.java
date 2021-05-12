@@ -21,6 +21,7 @@ package de.gmasil.pokedexer.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -81,6 +82,10 @@ public class CardDTO implements Serializable {
     private int progress = 0;
 
     private Language language;
+
+    private Date createdAt;
+
+    private Date updatedAt;
 
     public String getProgressValue() {
         return Card.getProgressValue(progress);

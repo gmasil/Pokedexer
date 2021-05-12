@@ -21,8 +21,10 @@ package de.gmasil.pokedexer.config.thymeleaf;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -45,6 +47,13 @@ public class ThymeleafUtils {
             return "";
         }
         return date.format(DateTimeFormatter.ofPattern(dateFormat));
+    }
+
+    public String formatDate(Date date) {
+        if (date == null) {
+            return "";
+        }
+        return new SimpleDateFormat(dateFormat).format(date);
     }
 
     public String formatCurrency(Double value) {
