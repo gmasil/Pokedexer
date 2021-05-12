@@ -19,17 +19,23 @@
  */
 package de.gmasil.pokedexer.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import de.gmasil.pokedexer.controller.advisor.Template;
 import de.gmasil.pokedexer.dto.CardDTO;
@@ -59,9 +65,34 @@ public class IndexController {
     @Autowired
     private LanguageRepository languageRepository;
 
+    private static Map<String, String> sortLookup = new HashMap<>();
+
+    @PostConstruct
+    private void initLookupMap() {
+        sortLookup.put("Name", "name");
+        sortLookup.put("Cert", "certNumber");
+        sortLookup.put("Grade", "grade");
+        sortLookup.put("Population", "population");
+        sortLookup.put("Purchase Date", "purchaseDate");
+        sortLookup.put("Purchase Price", "purchasePrice");
+        sortLookup.put("Grading Sendoff", "gradingSendOffDate");
+        sortLookup.put("Grading Received", "gradingReceivedDate");
+        sortLookup.put("Series", "seriesName");
+        sortLookup.put("Card Number", "cardNumber");
+        sortLookup.put("Language", "language");
+        sortLookup.put("Status", "status");
+        sortLookup.put("Progress", "progress");
+    }
+
     @GetMapping("/")
-    public String index(Template template) {
-        List<Card> cards = cardService.findAll();
+    public String index(Template template,
+            @RequestParam(name = "sort", required = false, defaultValue = "name") String sortParam,
+            @RequestParam(name = "desc") Optional<String> descParam) {
+        String sort = sortLookup.getOrDefault(sortParam, "name");
+        boolean desc = descParam.isPresent();
+        List<Card> cards = cardService.findAll(Sort.by(desc ? Sort.Direction.DESC : Sort.Direction.ASC, sort));
+        template.addAttribute("sort", sortParam);
+        template.addAttribute("desc", desc);
         return template.makeCardList(entityMapper.mapCard(cards));
     }
 

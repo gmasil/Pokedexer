@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import de.gmasil.pokedexer.services.UserProvider;
@@ -42,6 +43,10 @@ public class CardService {
 
     public List<Card> findAll() {
         return cardRepository.findAllByUser(userProvider.getCurrent());
+    }
+
+    public List<Card> findAll(Sort sort) {
+        return cardRepository.findAllByUser(userProvider.getCurrent(), sort);
     }
 
     public Card save(Card card) {

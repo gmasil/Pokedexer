@@ -77,6 +77,10 @@ public class Template {
         return makeApp(GENERIC, TEXT);
     }
 
+    public Model addAttribute(String attributeName, @Nullable Object attributeValue) {
+        return model.addAttribute(attributeName, attributeValue);
+    }
+
     // progress
 
     public String makeProgress(int value) {
@@ -197,10 +201,6 @@ public class Template {
         setFragmentFile(fragmentfile);
         setFragment(fragment);
         return INDEX;
-    }
-
-    private Model addAttribute(String attributeName, @Nullable Object attributeValue) {
-        return model.addAttribute(attributeName, attributeValue);
     }
 
     private void setMethod(String method) {

@@ -31,23 +31,11 @@
 	<br />
 	<a href="/add">Add Card</a>
 	<h2>Cards</h2>
-	<table class="table table-bordered table-hover table-sm">
+	<table class="table table-bordered table-hover table-striped table-sm">
 		<caption th:text="${'Total cards: ' + cards.size()}">Total cards</caption>
 		<thead class="thead-light">
-			<tr>
-				<th scope="col">Name</th>
-				<th scope="col">Cert</th>
-				<th scope="col">Grade</th>
-				<th scope="col">Population</th>
-				<th scope="col">Purchase Date</th>
-				<th scope="col">Purchase Price</th>
-				<th scope="col">Grading Sendoff</th>
-				<th scope="col">Grading Received</th>
-				<th scope="col">Set Name</th>
-				<th scope="col">Card Number</th>
-				<th scope="col">Language</th>
-				<th scope="col">Status</th>
-				<th scope="col">Progress</th>
+			<tr th:with="columns=${ {'Name', 'Cert', 'Grade', 'Population', 'Purchase Date', 'Purchase Price', 'Grading Sendoff', 'Grading Received', 'Series', 'Card Number', 'Language', 'Status', 'Progress'} }">
+				<th th:each="column : ${columns}" scope="col"><a class="mr-3 pr-3" th:href="${'?sort=' + column + (column.equalsIgnoreCase(sort) and !desc ? '&desc' : '')}" th:text="${column}">Colname</a> <em style="width:0;transform:translate(-2rem,5px);" th:if="${column.equalsIgnoreCase(sort)}" th:text="${desc ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}" class="material-icons icon-bigger">keyboard_arrow_down</em></th>
 				<th scope="col">Action</th>
 			</tr>
 		</thead>
