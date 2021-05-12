@@ -65,12 +65,36 @@ public class TestDataCreator {
                 seriesRepo.save(Series.builder().name("2020 Pokemon SWSH").user(initialUser).build());
             }
             if (cardRepo.count() == 0) {
-                cardRepo.save(Card.builder().name("Misty's Tears").purchasePrice(79.99D).user(initialUser).build());
-                cardRepo.save(Card.builder().name("Misty's Gyarados").purchasePrice(62.0D).cardNumber(130)
-                        .series(initialSeries).user(initialUser).build());
-                cardRepo.save(Card.builder().name("Misty's Seadra").purchasePrice(83.34D).cardNumber(117)
-                        .series(initialSeries).purchaseDate(LocalDate.of(2021, 04, 11)).certNumber(44728823L).grade(9)
-                        .population(74).progress(5).user(initialUser).build());
+                cardRepo.save(Card.builder() //
+                        .name("Misty's Tears") //
+                        .purchasePrice(79.99D) //
+                        .gradingSendOffDate(LocalDate.of(2021, 07, 1)) //
+                        .progress(4) //
+                        .purchaseDate(LocalDate.of(2021, 03, 6)) //
+                        .series(initialSeries) //
+                        .user(initialUser) //
+                        .build());
+                cardRepo.save(Card.builder() //
+                        .name("Misty's Gyarados") //
+                        .purchasePrice(62.0D) //
+                        .cardNumber(130) //
+                        .progress(3) //
+                        .purchaseDate(LocalDate.of(2021, 04, 9)) //
+                        .series(initialSeries) //
+                        .user(initialUser) //
+                        .build());
+                cardRepo.save(Card.builder() //
+                        .name("Misty's Seadra") //
+                        .purchasePrice(83.34D) //
+                        .cardNumber(117) //
+                        .series(initialSeries) //
+                        .purchaseDate(LocalDate.of(2021, 04, 11)) //
+                        .certNumber(44728823L) //
+                        .grade(9) //
+                        .population(74) //
+                        .progress(5) //
+                        .user(initialUser) //
+                        .build());
             }
         }
     }

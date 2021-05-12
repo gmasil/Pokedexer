@@ -61,8 +61,8 @@
 				<td th:text="${card.getPopulation()}"></td>
 				<td th:text="${#utils.formatDate(card.getPurchaseDate())}"></td>
 				<td th:text="${#utils.formatCurrency(card.getPurchasePrice())}"></td>
-				<td th:text="${card.getGradingSendOffDate()}"></td>
-				<td th:text="${card.getGradingReceivedDate()}"></td>
+				<td th:text="${#utils.formatDate(card.getGradingSendOffDate())}"></td>
+				<td th:text="${#utils.formatDate(card.getGradingReceivedDate())}"></td>
 				<td th:text="${card.getSeries() != null ? card.getSeries().getName() : ''}"></td>
 				<td th:text="${card.getCardNumber()}"></td>
 				<td th:text="${card.getStatus()}"></td>
@@ -167,7 +167,7 @@
 			</div>
 			<div class="col-6">
 				<div class="form-group">
-					<label for="card-crud-gradingreceiveddate">Grading Sendoff Date:</label>
+					<label for="card-crud-gradingreceiveddate">Grading Received Date:</label>
 					<input id="card-crud-gradingreceiveddate" class="form-control form-control-sm" type="date" th:field="*{gradingReceivedDate}" />
 					<span class="small form-text text-danger" th:if="${#fields.hasErrors('gradingReceivedDate')}" th:errors="*{gradingReceivedDate}"></span>
 				</div>
