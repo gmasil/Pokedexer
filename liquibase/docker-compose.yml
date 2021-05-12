@@ -1,0 +1,18 @@
+version: '3.0'
+
+services:
+  pokedexer-liquibase-db:
+    image: postgres:9.6-alpine
+    container_name: pokedexer-liquibase-db
+    environment:
+      - "POSTGRES_USER=pokedexer"
+      - "POSTGRES_PASSWORD=pokedexer"
+      - "POSTGRES_DB=pokedexer"
+    ports:
+      - "5432:5432"
+    networks:
+      - pokedexer-liquibase-net
+
+networks:
+  pokedexer-liquibase-net:
+    name: pokedexer-liquibase-net

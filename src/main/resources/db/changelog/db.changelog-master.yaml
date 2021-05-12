@@ -1,0 +1,225 @@
+#
+# Pokédexer
+# Copyright © 2021 Gmasil
+#
+# This file is part of Pokédexer.
+#
+# Pokédexer is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Pokédexer is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
+#
+
+databaseChangeLog:
+
+- changeSet:
+    id: 1
+    author: dev
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: users_pkey
+            name: id
+            type: BIGSERIAL
+        - column:
+            constraints:
+              nullable: false
+            name: admin
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: password
+            type: VARCHAR(255)
+        tableName: users
+
+- changeSet:
+    id: 2
+    author: dev
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: series_pkey
+            name: id
+            type: BIGSERIAL
+        - column:
+            constraints:
+              nullable: false
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: updated_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: user_id
+            type: BIGINT
+        tableName: series
+
+- changeSet:
+    id: 3
+    author: dev
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: card_pkey
+            name: id
+            type: BIGSERIAL
+        - column:
+            name: card_number
+            type: INTEGER
+        - column:
+            name: cert_number
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: grade
+            type: INTEGER
+        - column:
+            name: grading_received_date
+            type: date
+        - column:
+            name: grading_send_off_date
+            type: date
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: population
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: progress
+            type: INTEGER
+        - column:
+            name: purchase_date
+            type: date
+        - column:
+            name: purchase_price
+            type: FLOAT8
+        - column:
+            name: status
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: updated_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: series_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: user_id
+            type: BIGINT
+        tableName: card
+
+- changeSet:
+    id: 4
+    author: dev
+    changes:
+    - addUniqueConstraint:
+        columnNames: name
+        constraintName: uk_3g1j96g94xpk3lpxl2qbl985x
+        tableName: users
+
+- changeSet:
+    id: 5
+    author: dev
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: series
+        constraintName: fkowucb5qrpmshea8ptkmco26li
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true
+
+- changeSet:
+    id: 6
+    author: dev
+    changes:
+    - addUniqueConstraint:
+        columnNames: name, user_id
+        constraintName: uk9gf46wh8nym7oia5plykr6uvd
+        tableName: series
+
+- changeSet:
+    id: 7
+    author: dev
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: series_id
+        baseTableName: card
+        constraintName: fk6sm04vo3dgtoe54ec4wjrmmko
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: series
+        validate: true
+
+- changeSet:
+    id: 8
+    author: dev
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: card
+        constraintName: fkq5apcc4ddrab8t48q2uqvyquq
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: users
+        validate: true

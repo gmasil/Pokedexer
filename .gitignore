@@ -4,3 +4,4 @@
 /target/
 /src/main/resources/static/public/css
 /dev/data/
+/liquibase/db.changelog-generated.yaml
