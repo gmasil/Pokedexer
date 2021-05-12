@@ -20,11 +20,8 @@
 package de.gmasil.pokedexer.jpa;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,8 +29,8 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -47,7 +44,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -61,10 +57,7 @@ import lombok.Setter;
 @Table
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
-public class Card implements Serializable {
-
-    private static final List<String> PROGRESS_VALUES = Collections
-            .unmodifiableList(Arrays.asList("none", "interested", "bought", "ungraded", "in grading", "graded"));
+public class Language implements Serializable {
 
     @Id
     @Setter(AccessLevel.NONE)
@@ -72,41 +65,11 @@ public class Card implements Serializable {
     private Long id;
 
     @Length(min = 1)
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String name;
 
-    private Long certNumber;
-
-    private Integer grade;
-
-    private Integer population;
-
-    private LocalDate purchaseDate;
-
-    private Double purchasePrice;
-
-    private LocalDate gradingSendOffDate;
-
-    private LocalDate gradingReceivedDate;
-
-    @ManyToOne
-    @JoinColumn(name = "series_id", nullable = true)
-    private Series series;
-
-    private Integer cardNumber;
-
-    private String status;
-
-    @Default
-    private int progress = 0;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "language_id", nullable = true)
-    private Language language;
+    @OneToMany(mappedBy = "language")
+    private Set<Card> cards;
 
     @LastModifiedDate
     @Setter(AccessLevel.NONE)
@@ -120,15 +83,18 @@ public class Card implements Serializable {
     @Column(nullable = false, updatable = true)
     private Date updatedAt;
 
-    public String getProgressValue() {
-        return getProgressValue(progress);
+    public Language(long id) {
+        this.id = id;
     }
 
-    public static List<String> getProgressValues() {
-        return PROGRESS_VALUES;
-    }
-
-    public static String getProgressValue(int value) {
-        return PROGRESS_VALUES.get(value);
+    /**
+     * Important to remove foreign keys from referenced objects before deleting
+     * entries to maintain data integrity
+     */
+    @PreRemove
+    private void preRemove() {
+        for (Card card : cards) {
+            card.setLanguage(null);
+        }
     }
 }

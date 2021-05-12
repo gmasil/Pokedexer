@@ -30,6 +30,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import de.gmasil.pokedexer.jpa.Card;
+import de.gmasil.pokedexer.jpa.Language;
 import de.gmasil.pokedexer.jpa.Series;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -78,6 +79,8 @@ public class CardDTO implements Serializable {
     @Max(5)
     @Default
     private int progress = 0;
+
+    private Language language;
 
     public String getProgressValue() {
         return Card.getProgressValue(progress);

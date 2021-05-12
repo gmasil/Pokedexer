@@ -27,6 +27,7 @@ import org.springframework.ui.Model;
 import de.gmasil.pokedexer.dto.CardDTO;
 import de.gmasil.pokedexer.dto.SeriesDTO;
 import de.gmasil.pokedexer.jpa.Card;
+import de.gmasil.pokedexer.jpa.Language;
 import de.gmasil.pokedexer.jpa.Series;
 
 public class Template {
@@ -42,6 +43,8 @@ public class Template {
     public static final String CARD_CRUD = "card-crud";
     public static final String SERIES = "series";
     public static final String SERIES_CRUD = "series-crud";
+
+    public static final String LANGUAGES = "languages";
 
     public static final String GENERIC = "generic";
     public static final String LIST = "list";
@@ -140,23 +143,25 @@ public class Template {
         return INDEX;
     }
 
-    public String makeCardAdd(List<Series> series) {
+    public String makeCardAdd(List<Series> series, List<Language> languages) {
         setSite(APP);
         setFragmentFile(CARD_CRUD);
         setFragment(ADD_EDIT);
         setMethod(ADD);
         addAttribute(SERIES, series);
+        addAttribute(LANGUAGES, languages);
         addAttribute("progressvalues", Card.getProgressValues());
         return INDEX;
     }
 
-    public String makeCardEdit(CardDTO cardDTO, List<Series> series) {
+    public String makeCardEdit(CardDTO cardDTO, List<Series> series, List<Language> languages) {
         setSite(APP);
         setFragmentFile(CARD_CRUD);
         setFragment(ADD_EDIT);
         setMethod(EDIT);
         addAttribute("cardDTO", cardDTO);
         addAttribute(SERIES, series);
+        addAttribute(LANGUAGES, languages);
         addAttribute("progressvalues", Card.getProgressValues());
         return INDEX;
     }

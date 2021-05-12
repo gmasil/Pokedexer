@@ -36,6 +36,7 @@ import de.gmasil.pokedexer.dto.CardDTO;
 import de.gmasil.pokedexer.exception.ResourceNotFoundException;
 import de.gmasil.pokedexer.jpa.Card;
 import de.gmasil.pokedexer.jpa.CardService;
+import de.gmasil.pokedexer.jpa.LanguageRepository;
 import de.gmasil.pokedexer.jpa.SeriesService;
 import de.gmasil.pokedexer.services.EntityMapper;
 import de.gmasil.pokedexer.services.ValidationService;
@@ -55,6 +56,9 @@ public class IndexController {
     @Autowired
     private SeriesService seriesService;
 
+    @Autowired
+    private LanguageRepository languageRepository;
+
     @GetMapping("/")
     public String index(Template template) {
         List<Card> cards = cardService.findAll();
@@ -63,14 +67,14 @@ public class IndexController {
 
     @GetMapping("/add")
     public String showForm(Template template, CardDTO cardDTO) {
-        return template.makeCardAdd(seriesService.findAll());
+        return template.makeCardAdd(seriesService.findAll(), languageRepository.findAll());
     }
 
     @PostMapping("/add")
     public String addCard(Template template, @Valid CardDTO cardDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             handleCardBindingErrors(bindingResult);
-            return template.makeCardAdd(seriesService.findAll());
+            return template.makeCardAdd(seriesService.findAll(), languageRepository.findAll());
         }
         cardService.save(entityMapper.mapCardDTO(cardDTO));
         return "redirect:";
@@ -79,7 +83,7 @@ public class IndexController {
     @GetMapping("/edit/{id}")
     public String showUpdateForm(Template template, @PathVariable("id") long id) {
         Card card = findCardById(id);
-        return template.makeCardEdit(entityMapper.mapCard(card), seriesService.findAll());
+        return template.makeCardEdit(entityMapper.mapCard(card), seriesService.findAll(), languageRepository.findAll());
     }
 
     @PostMapping("/edit/{id}")
@@ -87,7 +91,7 @@ public class IndexController {
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             handleCardBindingErrors(bindingResult);
-            return template.makeCardEdit(cardDTO, seriesService.findAll());
+            return template.makeCardEdit(cardDTO, seriesService.findAll(), languageRepository.findAll());
         }
         Card card = findCardById(id);
         entityMapper.patchCard(cardDTO, card);

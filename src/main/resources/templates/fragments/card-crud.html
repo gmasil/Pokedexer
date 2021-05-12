@@ -45,6 +45,7 @@
 				<th scope="col">Grading Received</th>
 				<th scope="col">Set Name</th>
 				<th scope="col">Card Number</th>
+				<th scope="col">Language</th>
 				<th scope="col">Status</th>
 				<th scope="col">Progress</th>
 				<th scope="col">Action</th>
@@ -65,6 +66,7 @@
 				<td th:text="${#utils.formatDate(card.getGradingReceivedDate())}"></td>
 				<td th:text="${card.getSeries() != null ? card.getSeries().getName() : ''}"></td>
 				<td th:text="${card.getCardNumber()}"></td>
+				<td th:text="${card.getLanguage() != null ? card.getLanguage().getName() : ''}"></td>
 				<td th:text="${card.getStatus()}"></td>
 				<td>
 					<img th:src="${'/api/progress/' + card.getProgress()}" th:title="${card.getProgressValue()}" src="" alt=""></img>
@@ -95,7 +97,7 @@
 			</div>
 		</div>
 		<div class="form-row">
-			<div class="col-8">
+			<div class="col-6">
 				<div class="form-group">
 					<label for="card-crud-select-series">Series:</label>
 					<select id="card-crud-select-series" th:field="*{series}">
@@ -105,11 +107,21 @@
 					<span class="small form-text text-danger" th:if="${#fields.hasErrors('series')}" th:errors="*{series}"></span>
 				</div>
 			</div>
-			<div class="col-4">
+			<div class="col-2">
 				<div class="form-group">
 					<label for="card-crud-cardnumber">Card Number:</label>
 					<input id="card-crud-cardnumber" class="form-control form-control-sm" type="text" th:field="*{cardNumber}" />
 					<span class="small form-text text-danger" th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}"></span>
+				</div>
+			</div>
+			<div class="col-4">
+				<div class="form-group">
+					<label for="card-crud-select-language">Language:</label>
+					<select id="card-crud-select-language" th:field="*{language}">
+						<option data-placeholder="true" value=""></option>
+						<option th:each="l : ${languages}" th:attr="selected=${cardDTO.getLanguage() != null ? (cardDTO.getLanguage().getId() == l.getId()) : true}" th:value="${l.getId()}" th:text="${l.getName()}"></option>
+					</select>
+					<span class="small form-text text-danger" th:if="${#fields.hasErrors('language')}" th:errors="*{language}"></span>
 				</div>
 			</div>
 		</div>
@@ -200,6 +212,13 @@
 		new SlimSelect({
 			select : '#card-crud-select-series',
 			placeholder : 'Select Series',
+			searchHighlight : true,
+			allowDeselect : true,
+			deselectLabel : '<span class="text-danger">✘</span>'
+		});
+		new SlimSelect({
+			select : '#card-crud-select-language',
+			placeholder : 'Select Language',
 			searchHighlight : true,
 			allowDeselect : true,
 			deselectLabel : '<span class="text-danger">✘</span>'

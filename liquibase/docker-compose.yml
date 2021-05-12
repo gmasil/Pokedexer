@@ -9,7 +9,7 @@ services:
       - "POSTGRES_PASSWORD=pokedexer"
       - "POSTGRES_DB=pokedexer"
     ports:
-      - "5432:5432"
+      - "6543:5432"
     networks:
       - pokedexer-liquibase-net
 

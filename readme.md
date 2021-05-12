@@ -18,13 +18,15 @@ The status is a key feature to keep track of which cards you already own. You mi
 
 The default properties are meant for production. There is a `dev` profile for Spring Boot defined in `application-dev.properties`. The default database in production and dev is the H2 in-memory database.
 
-### Development Profile
+### Profiles
+
+#### Development Profile
 
 Run the application with either JVM argument `-Dspring.profiles.active=dev` or the environment variable `SPRING_PROFILES_ACTIVE=dev`.
 
 This profile will automatically create a user with default credentials as defined in `application-dev.properties`. This skips the manual setup page when starting the application to allow for faster turnaround times.
 
-### PostgreSQL Profile
+#### PostgreSQL Profile
 
 There is Spring Boot profile to run against a local postgresql database in `application-postgres.properties`. If you have Docker (and compose) installed you can run the `docker-compose.yml` file in the `dev` folder to start a configured postgresql database. The data is stored in a `data` folder inside the `dev` folder.
 
@@ -39,6 +41,10 @@ mvn sass:watch
 ```
 
 This command will run until you manually stop it, during that time all changes to `*.scss` files will automatically be detected and trigger a recompile.
+
+### Database Development
+
+The database scheme is created with Liquibase. For further information take a look at the Liquibase [readme](liquibase/readme.md).
 
 ### Build
 

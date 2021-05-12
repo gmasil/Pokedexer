@@ -4,6 +4,8 @@ set -e
 
 cd $(dirname "$(readlink -f "$0")")
 
+rm -f db.changelog-generated.yaml
+
 docker-compose up -d
 
 ARTIFACT_ID=$(mvn -f ../pom.xml org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.artifactId -q -DforceStdout)

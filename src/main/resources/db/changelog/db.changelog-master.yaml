@@ -223,3 +223,69 @@ databaseChangeLog:
         referencedColumnNames: id
         referencedTableName: users
         validate: true
+
+- changeSet:
+    id: 9
+    author: dev
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: language_pkey
+            name: id
+            type: BIGSERIAL
+        - column:
+            constraints:
+              nullable: false
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: updated_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        tableName: language
+
+- changeSet:
+    id: 10
+    author: dev
+    changes:
+    - addUniqueConstraint:
+        columnNames: name
+        constraintName: uk_g8hr207ijpxlwu10pewyo65gv
+        tableName: language
+
+- changeSet:
+    id: 11
+    author: dev
+    changes:
+    - addColumn:
+        columns:
+          name: language_id
+          type: BIGINT
+        tableName: card
+
+- changeSet:
+    id: 12
+    author: dev
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: language_id
+        baseTableName: card
+        constraintName: fki9g64qmxlrgynp3gplgtqepjx
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: language
+        validate: true

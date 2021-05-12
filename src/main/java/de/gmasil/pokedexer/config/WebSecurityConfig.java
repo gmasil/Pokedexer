@@ -38,33 +38,28 @@ import de.gmasil.pokedexer.jpa.UserService;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String LOGIN = "/login";
-
     @Autowired
     private UserService userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // @formatter:off
-        http
-            .authorizeRequests()
-	            .antMatchers("/admin/**").hasAuthority("ADMIN")
-	            .antMatchers("/admin").hasAuthority("ADMIN")
-	            .antMatchers("/setup").permitAll()
-	            .antMatchers(LOGIN).permitAll()
-	            .antMatchers("/logout").permitAll()
-	            .antMatchers("/error").permitAll()
-	            .antMatchers("/public/**").permitAll()
-	            .antMatchers("/api/progress/**").permitAll()
-	            .anyRequest().authenticated()
-        .and().
-            formLogin().loginPage(LOGIN).failureUrl("/login?error")
-            .loginProcessingUrl(LOGIN)
-            .usernameParameter("username")
-            .passwordParameter("password")
-        .and().logout()
-            .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout");
-        // @formatter:on
+        http.csrf().ignoringAntMatchers("/h2-console", "/h2-console/**");
+        http.headers().frameOptions().sameOrigin();
+        http.authorizeRequests() //
+                .antMatchers("/admin", "/admin/**").hasAuthority("ADMIN") //
+                .antMatchers("/h2-console", "/h2-console/**").permitAll() //
+                .antMatchers("/setup").permitAll() //
+                .antMatchers("/login", "/logout").permitAll() //
+                .antMatchers("/error").permitAll() //
+                .antMatchers("/public/**").permitAll() //
+                .antMatchers("/api/progress/**").permitAll() //
+                .anyRequest().authenticated();
+        http.formLogin().loginPage("/login").failureUrl("/login?error") //
+                .loginProcessingUrl("/login") //
+                .usernameParameter("username") //
+                .passwordParameter("password"); //
+        http.logout() //
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout");
     }
 
     @Bean
