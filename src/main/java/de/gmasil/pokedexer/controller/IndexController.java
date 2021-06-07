@@ -44,6 +44,7 @@ import de.gmasil.pokedexer.jpa.Card;
 import de.gmasil.pokedexer.jpa.CardService;
 import de.gmasil.pokedexer.jpa.LanguageRepository;
 import de.gmasil.pokedexer.jpa.SeriesService;
+import de.gmasil.pokedexer.psa.PsaService;
 import de.gmasil.pokedexer.services.EntityMapper;
 import de.gmasil.pokedexer.services.ValidationService;
 
@@ -61,6 +62,9 @@ public class IndexController {
 
     @Autowired
     private SeriesService seriesService;
+
+    @Autowired
+    private PsaService psaService;
 
     @Autowired
     private LanguageRepository languageRepository;
@@ -110,9 +114,18 @@ public class IndexController {
     @PostMapping("/add")
     public String addCard(Template template, @Valid CardDTO cardDTO, BindingResult bindingResult,
             @RequestParam(name = "sort", required = false, defaultValue = "name") String sortParam,
-            @RequestParam(name = "desc") Optional<String> descParam) {
+            @RequestParam(name = "desc") Optional<String> descParam,
+            @RequestParam(name = "autoPopulation", required = false, defaultValue = "false") boolean autoPopulation) {
         template.addAttribute("sort", sortParam);
         template.addAttribute("desc", descParam.isPresent());
+        try {
+            if (autoPopulation && cardDTO.getCertNumber() != null) {
+                int population = psaService.getPopulation("" + cardDTO.getCertNumber());
+                cardDTO.setPopulation(population);
+            }
+        } catch (Exception e) {
+            // TODO: inform user that population could not be determined
+        }
         if (bindingResult.hasErrors()) {
             handleCardBindingErrors(bindingResult);
             return template.makeCardAdd(seriesService.findAll(), languageRepository.findAll());
@@ -135,9 +148,18 @@ public class IndexController {
     public String updateCard(Template template, @PathVariable("id") long id, @Valid CardDTO cardDTO,
             BindingResult bindingResult,
             @RequestParam(name = "sort", required = false, defaultValue = "name") String sortParam,
-            @RequestParam(name = "desc") Optional<String> descParam) {
+            @RequestParam(name = "desc") Optional<String> descParam,
+            @RequestParam(name = "autoPopulation", required = false, defaultValue = "false") boolean autoPopulation) {
         template.addAttribute("sort", sortParam);
         template.addAttribute("desc", descParam.isPresent());
+        try {
+            if (autoPopulation && cardDTO.getCertNumber() != null) {
+                int population = psaService.getPopulation("" + cardDTO.getCertNumber());
+                cardDTO.setPopulation(population);
+            }
+        } catch (Exception e) {
+            // TODO: inform user that population could not be determined
+        }
         if (bindingResult.hasErrors()) {
             handleCardBindingErrors(bindingResult);
             return template.makeCardEdit(cardDTO, seriesService.findAll(), languageRepository.findAll());
@@ -165,6 +187,19 @@ public class IndexController {
         Card card = findCardById(id);
         cardService.delete(card);
         return "redirect:/?sort=" + sortParam + (descParam.isPresent() ? "&desc" : "");
+    }
+
+    @GetMapping("/updatepopulation")
+    public String updatePopulation(Template template) {
+        List<Card> cards = cardService.findAll();
+        cards.stream().filter(card -> card.getCertNumber() != null).forEach(card -> {
+            int population = psaService.getPopulation("" + card.getCertNumber());
+            card.setPopulation(population);
+            cardService.save(card);
+        });
+        template.addAttribute("sort", "name");
+        template.addAttribute("desc", false);
+        return template.makeCardList(entityMapper.mapCard(cards));
     }
 
     private void handleCardBindingErrors(BindingResult bindingResult) {

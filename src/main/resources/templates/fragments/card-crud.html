@@ -27,9 +27,6 @@
 </body>
 
 <div th:remove="tag" th:fragment="list">
-	<a href="/series">Series</a>
-	<br />
-	<a th:href="${'/add' + '?sort=' + sort + (desc ? '&desc' : '')}">Add Card</a>
 	<h2>Cards</h2>
 	<table class="table table-bordered table-hover table-striped table-sm">
 		<caption th:text="${'Total cards: ' + cards.size()}">Total cards</caption>
@@ -135,10 +132,15 @@
 				</div>
 			</div>
 			<div class="col-4">
-				<div class="form-group">
-					<label for="card-crud-population">Population:</label>
+				<label for="card-crud-population">Population:</label>
+				<div class="input-group input-group-sm mb-3">
 					<input id="card-crud-population" class="form-control form-control-sm" type="text" th:field="*{population}" />
-					<span class="small form-text text-danger" th:if="${#fields.hasErrors('population')}" th:errors="*{population}"></span>
+					<div class="input-group-append">
+						<div class="input-group-text">
+							<input id="card-crud-population-auto" type="checkbox" name="autoPopulation" class="mr-1">
+							<label class="m-0 p-0" for="card-crud-population-auto">Auto</label>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

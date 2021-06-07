@@ -27,9 +27,6 @@
 </body>
 
 <div th:remove="tag" th:fragment="list">
-	<a href="/">Home</a>
-	<br />
-	<a href="/series/add">Add Series</a>
 	<h2>Series</h2>
 	<table class="table table-bordered table-hover table-sm">
 		<caption th:text="${'Total series: ' + series.size()}">Total series</caption>
@@ -55,7 +52,7 @@
 	</table>
 </div>
 
-<div th:remove="tag" th:fragment="add-edit">
+<div th:fragment="add-edit" class="container">
 	<h2 th:text="${(method == 'edit' ? 'Edit' : 'New') + ' Series'}">New/Edit Series</h2>
 	<form action="#" th:action="${'/series/' + (method == 'edit' ? 'edit/' + seriesDTO.getId() : 'add')}" th:object="${seriesDTO}" method="post">
 		<div class="form-row">

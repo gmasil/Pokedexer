@@ -51,6 +51,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- versions -->
         <modelmapper.version>2.4.2</modelmapper.version>
+        <jsoup.version>1.13.1</jsoup.version>
         <thymeleaf-minifier.version>1.2</thymeleaf-minifier.version>
         <slimselectjs.version>1.20.0</slimselectjs.version>
         <bootstrap.version>4.6.0</bootstrap.version>
@@ -100,6 +101,11 @@
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>${modelmapper.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
         </dependency>
         <!-- frontend -->
         <dependency>
