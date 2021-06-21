@@ -55,6 +55,7 @@
         <thymeleaf-minifier.version>1.2</thymeleaf-minifier.version>
         <slimselectjs.version>1.20.0</slimselectjs.version>
         <bootstrap.version>4.6.0</bootstrap.version>
+        <jib-plugin.version>3.1.1</jib-plugin.version>
         <license-plugin.version>3.0</license-plugin.version>
         <jacoco-plugin.version>0.8.4</jacoco-plugin.version>
         <testapi.version>1.1</testapi.version>
@@ -305,10 +306,10 @@
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>${jib-plugin.version}</version>
                 <configuration>
                     <from>
-                        <image>openjdk:8-jre-slim</image>
+                        <image>openjdk:8-jre-slim@sha256:0bbd24c74e14020b66b647f9f116752869d51f1d651f044eda21c22d19d56c28</image>
                     </from>
                     <to>
                         <image>registry.gmasil.de/docker/${project.artifactId}</image>
