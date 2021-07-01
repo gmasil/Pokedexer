@@ -42,6 +42,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AccessLevel;
@@ -91,6 +92,9 @@ public class Card implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "series_id", nullable = true)
+//    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//    @JsonIdentityReference(alwaysAsId = true)
+//    @JsonProperty("series_id")
     private Series series;
 
     private Integer cardNumber;
@@ -100,6 +104,7 @@ public class Card implements Serializable {
     @Default
     private int progress = 0;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

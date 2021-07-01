@@ -19,27 +19,25 @@
  */
 package de.gmasil.pokedexer.controller.rest;
 
-import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.spring5.SpringTemplateEngine;
 
 @RestController
-@RequestMapping("/api/progress")
-public class ProgressController {
+@RequestMapping("/api")
+public class IndexRestController {
 
-    @Autowired
-    private SpringTemplateEngine templateEngine;
-
-    @GetMapping(value = "/{value}", produces = "image/svg+xml")
-    public String getProgressImage(@PathVariable int value, HttpServletResponse response) {
-        Context context = new Context();
-        context.setVariable("svgprogress", value);
-        return templateEngine.process("fragments/progress", context);
+    @GetMapping("")
+    public Map<String, String> index(HttpServletRequest request) {
+        Map<String, String> map = new HashMap<>();
+        map.put("self", "/api");
+        map.put("cards", "/api/cards");
+        map.put("series", "/api/series");
+        return map;
     }
 }

@@ -35,6 +35,8 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
@@ -55,6 +57,7 @@ public class User implements UserDetails, Serializable {
     @Column(unique = true, nullable = false)
     private String name;
 
+    @JsonIgnore
     @NotEmpty
     @Column(nullable = false)
     private String password;
