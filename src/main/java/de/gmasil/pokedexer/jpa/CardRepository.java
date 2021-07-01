@@ -29,7 +29,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
 
-    public List<Card> findAllByUser(User user);
+    public List<Card> findAllByUserId(Long userId, Sort sort);
 
     public List<Card> findAllByUser(User user, Sort sort);
 

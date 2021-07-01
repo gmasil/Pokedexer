@@ -42,7 +42,7 @@ public class CardService {
     }
 
     public List<Card> findAll() {
-        return cardRepository.findAllByUser(userProvider.getCurrent());
+        return findAll(Sort.by("id"));
     }
 
     public List<Card> findAll(Sort sort) {

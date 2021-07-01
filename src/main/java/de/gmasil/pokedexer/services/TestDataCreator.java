@@ -56,7 +56,7 @@ public class TestDataCreator {
     public void createTestData() {
         initialSetupRunner.setupInitialUser();
         List<User> users = userService.findAll();
-        if (users.size() == 1) {
+        if (!users.isEmpty()) {
             User initialUser = users.get(0);
             Series initialSeries = null;
             if (seriesRepo.count() == 0) {

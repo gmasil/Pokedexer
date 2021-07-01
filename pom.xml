@@ -254,7 +254,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <sassSourceDirectory>${project.basedir}/src/main/resources/static/sass</sassSourceDirectory>
+                    <sassSourceDirectory>${project.basedir}/src/main/resources/sass</sassSourceDirectory>
                     <destination>${project.build.directory}/classes/static/public/css</destination>
                     <sassOptions>
                         <style>:compressed</style>
