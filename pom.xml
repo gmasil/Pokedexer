@@ -54,7 +54,12 @@
         <jsoup.version>1.13.1</jsoup.version>
         <thymeleaf-minifier.version>1.2</thymeleaf-minifier.version>
         <slimselectjs.version>1.20.0</slimselectjs.version>
-        <bootstrap.version>4.6.0</bootstrap.version>
+        <vue.version>2.6.12</vue.version>
+        <vue-router.version>3.5.1</vue-router.version>
+        <webjars-locator.version>0.41</webjars-locator.version>
+        <bootstrap.version>4.6.0-1</bootstrap.version>
+        <axios.version>0.21.1</axios.version>
+        <!-- plugin versions -->
         <jib-plugin.version>3.1.1</jib-plugin.version>
         <license-plugin.version>3.0</license-plugin.version>
         <jacoco-plugin.version>0.8.4</jacoco-plugin.version>
@@ -74,9 +79,14 @@
     </parent>
 
     <dependencies>
+        <!-- spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -93,6 +103,8 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
@@ -102,11 +114,6 @@
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>${modelmapper.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
         </dependency>
         <!-- frontend -->
         <dependency>
@@ -130,19 +137,30 @@
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator</artifactId>
+            <version>${webjars-locator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>vue</artifactId>
+            <version>${vue.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>vue-router</artifactId>
+            <version>${vue-router.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
             <version>${bootstrap.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>axios</artifactId>
+            <version>${axios.version}</version>
         </dependency>
         <!-- database -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
@@ -162,6 +180,17 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+        </dependency>
+        <!-- utilities -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
         </dependency>
         <!-- test -->
         <dependency>

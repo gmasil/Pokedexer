@@ -48,11 +48,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/public/css/**").addResourceLocations( //
                 "classpath:/static/public/css/", //
-                "classpath:/META-INF/resources/webjars/bootstrap/4.6.0/css/", //
+                "classpath:/META-INF/resources/webjars/bootstrap/4.6.0-1/css/", //
                 "classpath:/slimselectjs/1.20.0/");
         registry.addResourceHandler("/public/js/**").addResourceLocations( //
                 "classpath:/static/public/js/", //
-                "classpath:/META-INF/resources/webjars/bootstrap/4.6.0/js/", //
+                "classpath:/META-INF/resources/webjars/bootstrap/4.6.0-1/js/", //
                 "classpath:/META-INF/resources/webjars/jquery/3.6.0/", //
                 "classpath:/slimselectjs/1.20.0/");
     }
