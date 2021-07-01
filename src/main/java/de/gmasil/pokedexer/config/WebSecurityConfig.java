@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/logout").permitAll() //
                 .antMatchers("/error").permitAll() //
                 .antMatchers("/public/**").permitAll() //
+                .antMatchers("/webjars/**").permitAll() //
                 .antMatchers("/api/progress/**").permitAll() //
                 .anyRequest().authenticated();
         http.formLogin().loginPage("/login").failureUrl("/login?error") //
