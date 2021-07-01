@@ -309,6 +309,7 @@
                         <exclude>**/LICENSE.txt</exclude>
                         <exclude>src/main/resources/static/public/css/**</exclude>
                         <exclude>src/main/resources/static/public/material-design-icons/**</exclude>
+                        <exclude>src/main/resources/static/public/beegridtable-1.1.2/**</exclude>
                     </excludes>
                     <mapping>
                         <factories>SCRIPT_STYLE</factories>

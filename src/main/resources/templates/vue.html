@@ -1,0 +1,278 @@
+<!--
+
+    Pokédexer
+    Copyright © 2021 Gmasil
+
+    This file is part of Pokédexer.
+
+    Pokédexer is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Pokédexer is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Pokédexer. If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<title>Vue.js Demo</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/public/beegridtable-1.1.2/styles/beegridtable.css" />
+
+</head>
+
+<body>
+    <div id="content">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <a class="navbar-brand">Pokédexer</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <router-link tag="li" class="nav-item" to="/"><a class="nav-link">Cards</a></router-link>
+                    <router-link tag="li" class="nav-item" to="/series"><a class="nav-link">Series</a></router-link>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Back to Legacy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid mt-3">
+            <router-view></router-view>
+            <div class="loading-background" v-show="isLoading"></div>
+        </div>
+    </div>
+
+    <script src="/webjars/axios/dist/axios.min.js"></script>
+
+    <script src="/webjars/vue/vue.min.js"></script>
+    <script src="/webjars/vue-router/dist/vue-router.min.js"></script>
+
+    <script src="/public/beegridtable-1.1.2/beegridtable.min.js"></script>
+
+    <script type="text/javascript">
+    const compCardTable = Vue.component('card-table', {
+        template: `
+        	<div>
+				<BeeGridTable stripe :columns="columns" :data="data" :showSummary="true">
+                    <template slot-scope="{ column }" slot="actionHeader">
+                    	<span>Action</span>
+                    </template>
+					<template slot-scope="{ row, index }" slot="action">
+						<p>Edit</p>
+		        		<p>Delete</p>
+					</template>
+					<template slot-scope="{ row, index }" slot="series">
+						<span v-model="row.series">{{ row.series.name }}</span>
+					</template>
+				</BeeGridTable>
+			</div>`,
+		data() {
+			return {
+				columns: [
+				    {
+                        title: "Name",
+                        key: "name",
+                        align: "left",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Cert",
+                        key: "certNumber",
+                        align: "left",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Grade",
+                        key: "grade",
+                        align: "left",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Population",
+                        key: "population",
+                        align: "left",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Purchase Date",
+                        key: "purchaseDate",
+                        align: "left",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Purchase Price",
+                        key: "purchasePrice",
+                        align: "right",
+                        resizable: true,
+                        sortable: true,
+                        showSummary: true
+                    },
+                    {
+                        title: "Grading Sendoff",
+                        key: "gradingSendOffDate",
+                        align: "right",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Grading Received",
+                        key: "gradingReceivedDate",
+                        align: "right",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Series",
+                        key: "series",
+                        slot: "series",
+                        align: "left",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Card Number",
+                        key: "cardNumber",
+                        align: "right",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Language",
+                        key: "language",
+                        align: "right",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Status",
+                        key: "status",
+                        align: "right",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Progress",
+                        key: "progressValue",
+                        align: "right",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Last Updated",
+                        key: "updatedAt",
+                        align: "right",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Action",
+                        key: "action",
+                        slot: "action",
+                        headSlot: "actionHeader",
+                        align: "center",
+                        resizable: true,
+                        sortable: false,
+                        hideFilter: true
+                    },
+				],
+				data: []
+			}
+		},
+		created() {
+			axios
+				.get('/api/cards')
+            	.then(response => this.data = response.data)
+		}
+    });
+    
+    const compSeriesTable = Vue.component('series-table', {
+        template: `
+        	<div>
+				<BeeGridTable stripe :columns="columns" :data="data">
+                    <template slot-scope="{ column }" slot="actionHeader">
+                    	<span>Action</span>
+                    </template>
+					<template slot-scope="{ row, index }" slot="action">
+						<p>Edit</p>
+		        		<p>Delete</p>
+					</template>
+				</BeeGridTable>
+			</div>`,
+		data() {
+			return {
+				columns: [
+				    {
+                        title: "Name",
+                        key: "name",
+                        align: "left",
+                        resizable: true,
+                        sortable: true
+                    },
+                    {
+                        title: "Action",
+                        key: "action",
+                        slot: "action",
+                        headSlot: "actionHeader",
+                        align: "center",
+                        resizable: true,
+                        sortable: false,
+                        hideFilter: true
+                    },
+				],
+				data: []
+			}
+		},
+		created() {
+			axios
+				.get('/api/series')
+            	.then(response => this.data = response.data)
+		}
+    });
+    
+    const router = new VueRouter({
+        routes: [
+            {
+                path: '/',
+                component: compCardTable
+            },
+            {
+                path: '/series',
+                component: compSeriesTable
+            }
+        ],
+        linkExactActiveClass: 'active'
+    });
+    
+    var app = new Vue({
+        el: '#content',
+        router,
+        data: {
+            isLoading: false,
+            globalCounter: 0
+        }
+    });
+</script>
+</body>
+</html>
