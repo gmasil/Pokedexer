@@ -79,10 +79,10 @@
 		        		<p>Delete</p>
 					</template>
 					<template slot-scope="{ row, index }" slot="series">
-						<span v-model="row.series">{{ row.series.name }}</span>
+						<span v-model="row.series" v-if="row.series">{{ row.series.name }}</span>
 					</template>
 					<template slot-scope="{ row, index }" slot="language">
-    					<span v-model="row.language">{{ row.language.name }}</span>
+    					<span v-model="row.language" v-if="row.language">{{ row.language.name }}</span>
     				</template>
 				</BeeGridTable>
 			</div>`,
@@ -94,7 +94,16 @@
                         key: "name",
                         align: "left",
                         resizable: true,
-                        sortable: true
+                        sortable: true,
+                        filterMethod(column, field, value, row) {
+                            if(value == null || value.length == 0){
+                                return true;
+                            }
+                            if(row.name == null) {
+                                return false;
+                            }
+                            return new RegExp(value, 'i').test(row.name);
+                        }
                     },
                     {
                         title: "Cert",
@@ -152,7 +161,17 @@
                         slot: "series",
                         align: "left",
                         resizable: true,
-                        sortable: true
+                        sortable: true,
+                        filterMethod(column, field, value, row) {
+                            if(value == null || value.length == 0){
+                                return true;
+                            }
+                            var cell = "";
+                            if(row.series != null && row.series.name != null) {
+                                cell = row.series.name;
+                            }
+                            return new RegExp(value, 'i').test(cell);
+                        }
                     },
                     {
                         title: "Card Number",
@@ -167,7 +186,17 @@
                         slot: "language",
                         align: "right",
                         resizable: true,
-                        sortable: true
+                        sortable: true,
+                        filterMethod(column, field, value, row) {
+                            if(value == null || value.length == 0){
+                                return true;
+                            }
+                            var cell = "";
+                            if(row.language != null && row.language.name != null) {
+                                cell = row.language.name;
+                            }
+                            return new RegExp(value, 'i').test(cell);
+                        }
                     },
                     {
                         title: "Status",
