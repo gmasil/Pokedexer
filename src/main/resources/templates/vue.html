@@ -81,6 +81,9 @@
 					<template slot-scope="{ row, index }" slot="series">
 						<span v-model="row.series">{{ row.series.name }}</span>
 					</template>
+					<template slot-scope="{ row, index }" slot="language">
+    					<span v-model="row.language">{{ row.language.name }}</span>
+    				</template>
 				</BeeGridTable>
 			</div>`,
 		data() {
@@ -161,6 +164,7 @@
                     {
                         title: "Language",
                         key: "language",
+                        slot: "language",
                         align: "right",
                         resizable: true,
                         sortable: true
