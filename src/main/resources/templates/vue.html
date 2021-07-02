@@ -29,6 +29,8 @@
 <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/public/beegridtable-1.1.2/styles/beegridtable.css" />
 
+<link href="/public/css/main.css" rel="stylesheet"></link>
+
 </head>
 
 <body>
@@ -60,6 +62,7 @@
     </div>
 
     <script src="/webjars/axios/dist/axios.min.js"></script>
+    <script src="/webjars/momentjs/min/moment.min.js"></script>
 
     <script src="/webjars/vue/vue.min.js"></script>
     <script src="/webjars/vue-router/dist/vue-router.min.js"></script>
@@ -70,7 +73,7 @@
     const compCardTable = Vue.component('card-table', {
         template: `
         	<div>
-				<BeeGridTable stripe :columns="columns" :data="data" :showSummary="true">
+				<BeeGridTable stripe :columns="columns" :data="data" :showSummary="true" :summary-method="customSummary">
                     <template slot-scope="{ column }" slot="actionHeader">
                     	<span>Action</span>
                     </template>
@@ -78,11 +81,20 @@
 						<p>Edit</p>
 		        		<p>Delete</p>
 					</template>
+					<template slot-scope="{ row, index }" slot="purchaseDate">
+						<span v-model="row.purchaseDate" v-if="row.purchaseDate">{{ row.purchaseDate | formatDate}}</span>
+					</template>
+					<template slot-scope="{ row, index }" slot="purchasePrice">
+						<span v-model="row.purchasePrice" v-if="row.purchasePrice">{{ row.purchasePrice }}€</span>
+					</template>
 					<template slot-scope="{ row, index }" slot="series">
 						<span v-model="row.series" v-if="row.series">{{ row.series.name }}</span>
 					</template>
 					<template slot-scope="{ row, index }" slot="language">
     					<span v-model="row.language" v-if="row.language">{{ row.language.name }}</span>
+    				</template>
+    				<template slot-scope="{ row, index }" slot="updatedAt">
+    					<span v-model="row.updatedAt" v-if="row.updatedAt">{{ row.updatedAt | formatDate}}</span>
     				</template>
 				</BeeGridTable>
 			</div>`,
@@ -129,6 +141,7 @@
                     {
                         title: "Purchase Date",
                         key: "purchaseDate",
+                        slot: "purchaseDate",
                         align: "left",
                         resizable: true,
                         sortable: true
@@ -136,6 +149,7 @@
                     {
                         title: "Purchase Price",
                         key: "purchasePrice",
+                        slot: "purchasePrice",
                         align: "right",
                         resizable: true,
                         sortable: true,
@@ -215,6 +229,7 @@
                     {
                         title: "Last Updated",
                         key: "updatedAt",
+                        slot: "updatedAt",
                         align: "right",
                         resizable: true,
                         sortable: true
@@ -237,7 +252,49 @@
 			axios
 				.get('/api/cards')
             	.then(response => this.data = response.data)
-		}
+		},
+		methods: {
+	        //Custom Sum Method
+	        customSummary({ columns, data }) {
+	          const sums = {};
+	          columns.forEach((column, index) => {
+	            console.log(column);
+	            const key = column.key;
+	            // Summary name column
+	            if (column.key === "name") {
+	              sums[column.key] = {
+	                key: column.key,
+	                value: "Sum",
+	              };
+	              return;
+	            }
+	            // sum money
+	            if (column.key === "purchasePrice") {
+	              const values = data.map((item) => Number(item[key]));
+	              if (!values.every((value) => isNaN(value))) {
+	                const v = values.reduce((prev, curr) => {
+	                  const value = Number(curr);
+	                  if (!isNaN(value)) {
+	                    return prev + curr;
+	                  } else {
+	                    return prev;
+	                  }
+	                }, 0);
+	                sums[key] = {
+	                  key,
+	                  value: v + "€",
+	                };
+	              } else {
+	                sums[key] = {
+	                  key,
+	                  value: "N/A",
+	                };
+	              }
+	            }
+	          });
+	          return sums;
+	        },
+	      }
     });
     
     const compSeriesTable = Vue.component('series-table', {
@@ -261,7 +318,16 @@
                         key: "name",
                         align: "left",
                         resizable: true,
-                        sortable: true
+                        sortable: true,
+                        filterMethod(column, field, value, row) {
+                            if(value == null || value.length == 0){
+                                return true;
+                            }
+                            if(row.name == null) {
+                                return false;
+                            }
+                            return new RegExp(value, 'i').test(row.name);
+                        }
                     },
                     {
                         title: "Action",
@@ -282,6 +348,13 @@
 				.get('/api/series')
             	.then(response => this.data = response.data)
 		}
+    });
+    
+    Vue.filter('formatDate', function(value) {
+        if (value) {
+            var date = new Date(Date.parse(value));
+            return moment(value).format('DD.MM.YYYY');
+        }
     });
     
     const router = new VueRouter({

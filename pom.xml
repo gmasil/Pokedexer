@@ -59,6 +59,7 @@
         <webjars-locator.version>0.41</webjars-locator.version>
         <bootstrap.version>4.6.0-1</bootstrap.version>
         <axios.version>0.21.1</axios.version>
+        <momentjs.version>2.29.1</momentjs.version>
         <!-- plugin versions -->
         <jib-plugin.version>3.1.1</jib-plugin.version>
         <license-plugin.version>3.0</license-plugin.version>
@@ -120,11 +121,13 @@
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-java8time</artifactId>
         </dependency>
+        <!--
         <dependency>
             <groupId>de.gmasil</groupId>
             <artifactId>thymeleaf-minifier</artifactId>
             <version>${thymeleaf-minifier.version}</version>
         </dependency>
+        -->
         <dependency>
             <groupId>de.gmasil.thirdparty</groupId>
             <artifactId>slimselectjs</artifactId>
@@ -159,6 +162,11 @@
             <groupId>org.webjars.npm</groupId>
             <artifactId>axios</artifactId>
             <version>${axios.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>momentjs</artifactId>
+            <version>${momentjs.version}</version>
         </dependency>
         <!-- database -->
         <dependency>
@@ -283,7 +291,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <sassSourceDirectory>${project.basedir}/src/main/resources/sass</sassSourceDirectory>
+                    <sassSourceDirectory>${project.basedir}/src/main/resources/static/sass</sassSourceDirectory>
                     <destination>${project.build.directory}/classes/static/public/css</destination>
                     <sassOptions>
                         <style>:compressed</style>
