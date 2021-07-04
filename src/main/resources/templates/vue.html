@@ -85,7 +85,7 @@
 						<span v-model="row.purchaseDate" v-if="row.purchaseDate">{{ row.purchaseDate | formatDate}}</span>
 					</template>
 					<template slot-scope="{ row, index }" slot="purchasePrice">
-						<span v-model="row.purchasePrice" v-if="row.purchasePrice">{{ row.purchasePrice }}€</span>
+						<span v-model="row.purchasePrice" v-if="row.purchasePrice">{{ row.purchasePrice.toFixed(2) }}€</span>
 					</template>
 					<template slot-scope="{ row, index }" slot="series">
 						<span v-model="row.series" v-if="row.series">{{ row.series.name }}</span>
@@ -282,7 +282,7 @@
 	                }, 0);
 	                sums[key] = {
 	                  key,
-	                  value: v + "€",
+	                  value: v.toFixed(2) + "€",
 	                };
 	              } else {
 	                sums[key] = {
