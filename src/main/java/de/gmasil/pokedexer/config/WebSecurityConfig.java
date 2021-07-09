@@ -60,7 +60,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username") //
                 .passwordParameter("password"); //
         http.logout() //
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout");
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) //
+                .logoutSuccessUrl("/login?logout") //
+                .deleteCookies("JSESSIONID", "remember-me");
+        http.rememberMe() //
+                .key("uniqueAndSecret") //
+                .userDetailsService(userService) //
+                .rememberMeParameter("remember-me");
     }
 
     @Bean
