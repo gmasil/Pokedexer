@@ -39,6 +39,7 @@ pipeline {
     always {
       junit testResults: '**/surefire-reports/**/*.xml', allowEmptyResults: true
       archiveArtifacts artifacts: '**/selenium-screenshots/*.png', fingerprint: true, allowEmptyArchive: true
+      cleanWs()
     }
   }
 }
